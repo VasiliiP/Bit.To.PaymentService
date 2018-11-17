@@ -17,7 +17,7 @@ namespace Bit.To.PaymentService.Models
                 if (string.IsNullOrEmpty(AuthToken))
                     return false;
 
-                return ExpirationDateUtc >= DateTime.UtcNow;
+                return ExpirationDateUtc > DateTime.UtcNow;
             }
         }
     }

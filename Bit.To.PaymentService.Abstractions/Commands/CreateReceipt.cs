@@ -44,9 +44,4 @@ namespace Bit.To.PaymentService.Abstractions.Commands
         public List<string> Errors { get; set; }
 
     }
-
-    public class RecieptResponseData
-    {
-        public string ReceiptId { get; set; }
-    }
 }
