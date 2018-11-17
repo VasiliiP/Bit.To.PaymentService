@@ -1,14 +1,21 @@
 {
     "HostUrl": "http://localhost/api/v1/payment/",
     "ServiceName": "bit.to.paymentservice",
-    "ServiceDescription": "Сервис оплаты",
+    "ServiceDescription": "Payment service",
     "ConnectionStrings": {
         "email": "Data Source=localhost;Initial Catalog=to_email;Persist Security Info=True;User ID=user;Password=userpassword"
     },
-    "LogPath": ".\\logs",    
-    "SvcMetaTitle": "API сервиса оплаты",
+    "LogPath": ".\\logs",
+    "SvcMetaTitle": "API Payment service",
     "SvcMetaVer": "v1",
     "SvcMetaDescription": "",
     "SvcMetaContact": "admin@rmetrika.ru",
-    "SwaggerResourceListingPath": "swagger/"
+    "SwaggerResourceListingPath": "swagger/",
+    "FermaLogin": "gollandec@yandex.ru",
+    "FermaPassword": "jasoncey",
+    "FermaBaseUrl": "https://ofd.ru/",
+    "AuthResource": "api/Authorization/CreateAuthToken",
+    "CreateReceiptResource": "api/kkt/cloud/receipt",
+    "Inn": "2539112357"
+
 }

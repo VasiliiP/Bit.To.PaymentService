@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using Autofac;
 using Bit.Persistence;
+using Bit.To.PaymentService.Services;
+using Bit.To.PaymentService.Web;
 using Bit.Validation;
 using Nancy;
 using Nancy.Bootstrapper;
+using Nancy.Hosting.Self;
 using Nancy.Responses;
 using Nancy.Swagger;
 using Nancy.Swagger.Modules;
@@ -64,7 +67,7 @@ namespace Bit.To.PaymentService.Host
             var bootstrapper = new ConfigurableAutofacBootstrapper(
                 container,
                 new List<Action<ILifetimeScope, IPipelines>> {LogError},
-                //null, null, 
+                typeof(CreateReceiptModule),
                 typeof(SwaggerModule));
 
             InitSwagger(config);
@@ -86,6 +89,8 @@ namespace Bit.To.PaymentService.Host
                                 var uri = new Uri(config["HostUrl"]);
                                 {
                                     c.AddHost(uri.Scheme, uri.Host, uri.Port, uri.AbsolutePath);
+                                    //TODO: без авторезервирования не всегда запускается, потом убрать
+                                    c.ConfigureNancy(h => h.UrlReservations = new UrlReservations() { CreateAutomatically = true });
                                 }
                                 c.CreateUrlReservationsOnInstall();
                                 c.OpenFirewallPortsOnInstall(config["ServiceName"]);
@@ -119,7 +124,21 @@ namespace Bit.To.PaymentService.Host
         private static IContainer CreateContainer(IAppConfiguration config)
         {
             var builder = new ContainerBuilder();
+            
+            builder.RegisterType<FermaService>()
+                .WithParameter("fermaLogin", config["FermaLogin"].AsString())
+                .WithParameter("fermaPassword", config["FermaPassword"].AsString())
+                .WithParameter("fermaBaseUrl", config["FermaBaseUrl"].AsString())
+                .WithParameter("authResource", config["AuthResource"].AsString())
+                .WithParameter("createReceiptResource", config["CreateReceiptResource"].AsString())
+                .WithParameter("inn", config["Inn"].AsString())
+                .AsImplementedInterfaces();
+
+            builder.RegisterType<CreateReceiptModule>();
+            builder.RegisterType<CreateReceiptModule>().AsImplementedInterfaces();
+            builder.RegisterType<ReceiptFactory>().AsImplementedInterfaces();
             builder.RegisterType<SwaggerModule>();
+
             return builder.Build();
         }
 

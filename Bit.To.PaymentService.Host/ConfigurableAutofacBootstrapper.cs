@@ -6,6 +6,7 @@ using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Bootstrappers.Autofac;
 using Nancy.Configuration;
+using Nancy.Diagnostics;
 
 namespace Bit.To.PaymentService.Host
 {
@@ -15,6 +16,7 @@ namespace Bit.To.PaymentService.Host
         private readonly IDictionary<Type, List<Action<ILifetimeScope, NancyModule>>> _configureModules;
         private readonly ICollection<Action<ILifetimeScope, IPipelines>> _configureAppPipelines;
         private readonly ICollection<Action<ILifetimeScope, NancyContext>> _configureRequestContainer;
+
 
         public ConfigurableAutofacBootstrapper(
             IContainer container,
@@ -35,7 +37,7 @@ namespace Bit.To.PaymentService.Host
         {
             _container = container;
             _configureAppPipelines = configureAppPipelines;
-            //_configureModules = allowedModules.ToDictionary(x => x, x => new List<Action<ILifetimeScope, NancyModule>>());
+            _configureModules = allowedModules.ToDictionary(x => x, x => new List<Action<ILifetimeScope, NancyModule>>());
             _configureRequestContainer = new List<Action<ILifetimeScope, NancyContext>>();
         }
 
@@ -61,6 +63,9 @@ namespace Bit.To.PaymentService.Host
         public override void Configure(INancyEnvironment environment)
         {
             base.Configure(environment);
+            //TODO: для отладки, потом убрать
+            environment.Diagnostics(true, "Qaz123");
+
             environment.Tracing(enabled: false, displayErrorTraces: true);
         }
 

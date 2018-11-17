@@ -1,81 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Bit.To.PaymentService.Abstractions.Commands;
+using Bit.To.PaymentService.Logging;
 using Bit.To.PaymentService.Models;
+using Newtonsoft.Json;
+using RestSharp;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using Bit.To.PaymentService.RestClients;
 
 namespace Bit.To.PaymentService.Services
 {
     public class FermaService : IFermaService
     {
-        #region private
-        private readonly string _login = "gollandec@yandex.ru";
-        private readonly string _password = "jasoncey";
-        private readonly string _baseUrl = "https://ofd.ru/";
-        private readonly string _authResource = "api/Authorization/CreateAuthToken";
-        private readonly string _inn = "2539112357";
+        private readonly string _fermaLogin;
+        private readonly string _fermaPassword;
+        private readonly string _fermaBaseUrl;
+        private readonly string _authResource;
+        private readonly string _inn;
+        private readonly string _createReceiptResource;
         private FermaAuthData FermaAuthData { get; set; }
+        private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
+        private readonly IReceiptFactory ReceiptFactory;
 
-        private T ExecuteGet<T>(RestRequest request) where T : new()
+        public FermaService(IReceiptFactory receiptFactory, 
+                            string fermaLogin, 
+                            string fermaPassword, 
+                            string fermaBaseUrl, 
+                            string authResource, 
+                            string createReceiptResource, 
+                            string inn)
         {
-
-            request.AddParameter("AuthToken", GetToken(), ParameterType.UrlSegment);
-            request.Method = Method.GET;
-            request.AddHeader("Content-Type", "application/json");
-
-            var client = new RestClient { BaseUrl = new System.Uri(_baseUrl) };
-            var response = client.Execute<T>(request);
-
-            if (response.ErrorException != null)
-            {
-                const string message = "Error retrieving response.  Check inner details for more info.";
-                var exception = new ApplicationException(message, response.ErrorException);
-                throw exception;
-            }
-            return response.Data;
-        }
-
-        private T ExecutePost<T, K>(RestRequest request, K obj) where T : new()
-        {
-            request.AddParameter("AuthToken", GetToken(), ParameterType.UrlSegment);
-            request.Method = Method.POST;
-            request.AddHeader("Content-Type", "application/json");
-
-            var settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Include,
-
-                Converters = new List<JsonConverter>
-                {
-                    new IsoDateTimeConverter()
-                    {
-                        DateTimeFormat= "yyyy-MM-ddTHH:mm:ss"
-                    }
-                }
-            };
-
-            var myContentJson = JsonConvert.SerializeObject(obj, settings);
-            request.AddParameter("application/json", myContentJson, ParameterType.RequestBody);
-
-            var client = new RestClient { BaseUrl = new System.Uri(_baseUrl) };
-            var response = client.Execute<T>(request);
-
-            if (response.ErrorException != null)
-            {
-                Log.Logger.Error("ExecutePost");
-                const string message = "Error retrieving response.  Check inner details for more info.";
-                var exception = new ApplicationException(message, response.ErrorException);
-                throw exception;
-            }
-
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                _Log.Error("ExecutePost");
-            }
-
-            return response.Data;
+            ReceiptFactory = receiptFactory;
+            _fermaLogin = fermaLogin;
+            _fermaPassword = fermaPassword;
+            _fermaBaseUrl = fermaBaseUrl;
+            _authResource = authResource;
+            _createReceiptResource = createReceiptResource;
+            _inn = inn;
         }
 
         /// <summary>
@@ -86,17 +47,15 @@ namespace Bit.To.PaymentService.Services
             if (FermaAuthData != null && FermaAuthData.IsValid)
                 return FermaAuthData.AuthToken;
 
-            var client = new RestClient { BaseUrl = new System.Uri(_baseUrl) };
+            var client = new RestClient { BaseUrl = new System.Uri(_fermaBaseUrl) };
             var loginRequest = new RestRequest(_authResource, Method.POST);
             var body = JsonConvert.SerializeObject(new
             {
-                Login = _login,
-                Password = _password
+                Login = _fermaLogin,
+                Password = _fermaPassword
             });
             loginRequest.AddParameter("application/json", body, ParameterType.RequestBody);
-
             var response = client.Execute<FermaAuthData>(loginRequest);
-
             if (response.ErrorException != null)
             {
                 const string message = "Error retrieving response. Check inner details for more info.";
@@ -106,66 +65,21 @@ namespace Bit.To.PaymentService.Services
 
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                Log.Error("GetToken()");
-                //var sb = new StringBuilder();
-                //foreach (var param in response.Request.Parameters)
-                //{
-                //    sb.AppendFormat("{0}: {1}\r\n", param.Name, param.Value);
-                //}
-
+                Log.Error("GetToken error");
                 var exception = new ApplicationException("", null);
                 throw exception;
             }
 
             FermaAuthData = response.Data;
-
             return FermaAuthData.AuthToken;
         }
-        #endregion
+       
 
-        public RecieptResponse CreateReciept()
+        public void CreateReciept()
         {
-            var payload = new RecieptRequest
-            {
-                Inn = _inn,
-                InvoiceId = "InvoiceId100",
-                LocalDate = DateTime.UtcNow,
-                Type = "Income",
-                CustomerReceipt = new CustomerReceipt
-                {
-                    Email = "asd@dsa.ru",
-                    Phone = "89991234567",
-                    TaxationSystem = "Common",
-                    Items = new List<RecieptItem>
-                    {
-                        new RecieptItem
-                        {
-                            Label = "Tomates",
-                            Quantity = 12.00f,
-                            Price = 40.00M,
-                            Amount = 480M
-                        },
-                        new RecieptItem
-                        {
-                            Label = "Cucumbers",
-                            Quantity = 10.00f,
-                            Price = 40.00M,
-                            Amount = 400M
-                        }
-                    }
-                }
-            };
-
-            var request = new RestRequest();
-            request.Resource = "api/kkt/cloud/receipt";
-
-            return ExecutePost<RecieptResponse, RecieptRequest>(request, payload);
+            var cmd = ReceiptFactory.Create(_inn);
+            var handler = new CreateRecieptRestClient(GetToken(), _fermaBaseUrl, _createReceiptResource);
+            handler.Execute(cmd);
         }
-
-    }
-
-    public interface IFermaService
-    {
-        RecieptResponse CreateReciept();
     }
 }

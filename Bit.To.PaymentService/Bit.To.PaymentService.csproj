@@ -30,8 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Nancy, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nancy.2.0.0-pre1908\lib\net452\Nancy.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.2.2.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.2.2\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +54,23 @@
     <Compile Include="Models\FermaAuthData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FermaService.cs" />
+    <Compile Include="Services\IFermaService.cs" />
+    <Compile Include="Services\IReceiptFactory.cs" />
+    <Compile Include="Services\ReceiptFactory.cs" />
+    <Compile Include="Web\CreateReceiptModule.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bit.To.PaymentService.Abstractions\Bit.To.PaymentService.Abstractions.csproj">
+      <Project>{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4}</Project>
+      <Name>Bit.To.PaymentService.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bit.To.PaymentService.RestClients\Bit.To.PaymentService.RestClients.csproj">
+      <Project>{EB935B00-E572-46BD-BC7E-F50229D06001}</Project>
+      <Name>Bit.To.PaymentService.RestClients</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

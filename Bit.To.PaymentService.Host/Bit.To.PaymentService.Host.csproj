@@ -135,5 +135,11 @@
   <ItemGroup>
     <Analyzer Include="..\packages\AsyncUsageAnalyzers.1.0.0-alpha003\analyzers\dotnet\AsyncUsageAnalyzers.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bit.To.PaymentService\Bit.To.PaymentService.csproj">
+      <Project>{6A548EAA-F970-4C92-931B-3BDBDCB5A785}</Project>
+      <Name>Bit.To.PaymentService</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
