@@ -134,7 +134,8 @@ namespace Bit.To.PaymentService.Host
                 .WithParameter("getReceiptStatusResource", config["GetReceiptStatusResource"].AsString())
                 .WithParameter("getReceiptsListResourse", config["GetReceiptsListResourse"].AsString())
                 .WithParameter("inn", config["Inn"].AsString())
-                .AsImplementedInterfaces();
+                .AsImplementedInterfaces()
+                .SingleInstance();
 
             builder.RegisterType<CreateReceiptModule>();
             builder.RegisterType<CreateReceiptModule>().AsImplementedInterfaces();

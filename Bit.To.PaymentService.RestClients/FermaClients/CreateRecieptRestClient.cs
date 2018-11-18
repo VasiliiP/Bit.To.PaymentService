@@ -22,7 +22,7 @@ namespace Bit.To.PaymentService.RestClients
                 return;
 
             var payload = response.Data;
-            Log.DebugFormat("{0} response is: Status:{1}, Payload:{2}",
+            Log.DebugFormat("{0} Ferma response is: Status:{1}, Payload:{2}",
                 response.Request.Resource, payload.Status, payload.Data.ReceiptId);
             Response = payload;
         }

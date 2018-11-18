@@ -25,7 +25,8 @@ namespace Bit.To.PaymentService.RestClients.FermaClients
         protected IRestResponse<TResult> ExecutePost<TResult, TCmd>(TCmd cmd) where TResult : BaseFermaResponse, new()
         {
             var request = new RestRequest { Resource = _resource };
-            request.AddParameter("AuthToken", _token, ParameterType.QueryString);
+            if (!string.IsNullOrEmpty(_token))
+                request.AddParameter("AuthToken", _token, ParameterType.QueryString);
             request.Method = Method.POST;
             request.AddHeader("Content-Type", "application/json");
 
@@ -47,11 +48,12 @@ namespace Bit.To.PaymentService.RestClients.FermaClients
                     parameters.AppendFormat("{0}: {1}\r\n", param.Name, param.Value);
                 }
                 Log.ErrorFormat("Request to {0} failed with StatusCode: {1}, ErrorMessage: {2}",
-                    response.Request.Resource, (int)response.StatusCode, payload.Error?.Message);
-                Log.DebugFormat("{0} response is: Status:{1}, Error:{2}\r\n Parmeters:{3}",
-                    response.Request.Resource, payload.Status, payload.Error?.Message, parameters);
+                    response.Request.Resource, (int)response.StatusCode, payload?.Error?.Message);
+                Log.DebugFormat("{0} Ferma response is: Status:{1}, Error:{2}\r\n Parmeters:{3}",
+                    response.Request.Resource, payload?.Status, payload?.Error?.Message, parameters);
                 return null;
             }
+            
             return response;
         }
     }

@@ -50,12 +50,14 @@
     <Compile Include="Commands\CreateReceipt.cs" />
     <Compile Include="Commands\CreateReceiptResponse.cs" />
     <Compile Include="Models\BaseFermaResponse.cs" />
+    <Compile Include="Models\FermaAuthDto.cs" />
     <Compile Include="Models\ReceiptsListDto.cs" />
     <Compile Include="Models\ReceiptStatusDto.cs" />
     <Compile Include="Models\ReceiptStatusEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetReceiptsList.cs" />
     <Compile Include="Queries\GetReceiptStatus.cs" />
+    <Compile Include="Queries\GetToken.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

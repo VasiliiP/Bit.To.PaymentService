@@ -8,23 +8,30 @@ namespace Bit.To.PaymentService.Models
 {
     public class FermaAuth
     {
-        public FermaAuthData Data { get; set; }
+        public string AuthToken { get; set; }
+        public DateTime ExpirationDateUtc { get; set; }
         public bool IsValid
         {
             get
             {
-                if (string.IsNullOrEmpty(Data.AuthToken))
+                if (string.IsNullOrEmpty(AuthToken))
                     return false;
 
-                return Data.ExpirationDateUtc > DateTime.UtcNow;
+                return ExpirationDateUtc > DateTime.UtcNow;
             }
         }
-    }
 
-    public class FermaAuthData
-    {
-        public string AuthToken { get; set; }
-        public DateTime ExpirationDateUtc { get; set; }
-    }
+        public static FermaAuth FromDto(FermaAuthDto dto)
+        {
+            if (dto.Data == null)
+                return null;
 
+            var result = new FermaAuth
+            {
+                AuthToken = dto.Data.AuthToken,
+                ExpirationDateUtc = dto.Data.ExpirationDateUtc
+            };
+            return result;
+        }
+    }
 }

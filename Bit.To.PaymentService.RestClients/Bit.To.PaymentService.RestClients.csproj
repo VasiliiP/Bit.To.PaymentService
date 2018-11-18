@@ -55,6 +55,7 @@
     <Compile Include="FermaClients\CreateRecieptRestClient.cs" />
     <Compile Include="FermaClients\GetReceiptsListRestClient.cs" />
     <Compile Include="FermaClients\GetReceiptStatusRestClient.cs" />
+    <Compile Include="FermaClients\GetTokenRestClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

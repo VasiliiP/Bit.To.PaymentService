@@ -22,9 +22,9 @@ namespace Bit.To.PaymentService.Services
         private readonly string _createReceiptResource;
         private readonly string _getReceiptStatusResource;
         private readonly string _getReceiptsListResourse;
-        private FermaAuth FermaAuth { get; set; }
+        private FermaAuth FermaAuthDto { get; set; }
         private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
-        private readonly IReceiptFactory ReceiptFactory;
+        private readonly IReceiptFactory _receiptFactory;
 
         public FermaService(IReceiptFactory receiptFactory, 
                             string fermaLogin, 
@@ -36,7 +36,7 @@ namespace Bit.To.PaymentService.Services
                             string getReceiptStatusResource, 
                             string getReceiptsListResourse)
         {
-            ReceiptFactory = receiptFactory;
+            _receiptFactory = receiptFactory;
             _fermaLogin = fermaLogin;
             _fermaPassword = fermaPassword;
             _fermaBaseUrl = fermaBaseUrl;
@@ -52,41 +52,26 @@ namespace Bit.To.PaymentService.Services
         /// </summary>
         private string GetToken()
         {
-            if (FermaAuth != null && FermaAuth.IsValid)
-                return FermaAuth.Data.AuthToken;
+            if (FermaAuthDto != null && FermaAuthDto.IsValid)
+                return FermaAuthDto.AuthToken;
 
-            var client = new RestClient { BaseUrl = new System.Uri(_fermaBaseUrl) };
-            var loginRequest = new RestRequest(_authResource, Method.POST);
-            var body = JsonConvert.SerializeObject(new
+            var getTokenQuery = new GetToken
             {
                 Login = _fermaLogin,
                 Password = _fermaPassword
-            });
-            loginRequest.AddParameter("application/json", body, ParameterType.RequestBody);
-            var response = client.Execute<FermaAuth>(loginRequest);
-            if (response.ErrorException != null)
-            {
-                const string message = "Error retrieving response. Check inner details for more info.";
-                var exception = new ApplicationException(message, response.ErrorException);
-                throw exception;
-            }
+            };
 
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                Log.Error("GetToken error");
-                var exception = new ApplicationException("", null);
-                throw exception;
-            }
-
-            FermaAuth = response.Data;
-            return FermaAuth.Data.AuthToken;
+            var handler = new GetTokenRestClient(_fermaBaseUrl, _authResource);
+            var dto = handler.Execute(getTokenQuery);
+            FermaAuthDto = FermaAuth.FromDto(dto);
+            return FermaAuthDto.AuthToken;
         }
        
 
         public void TestMethods()
         {
             //создание чека
-            var createRecieptCommand = ReceiptFactory.Create(_inn);
+            var createRecieptCommand = _receiptFactory.Create(_inn);
             var createRecieptHandler = new CreateRecieptRestClient(GetToken(), _fermaBaseUrl, _createReceiptResource);
             createRecieptHandler.Execute(createRecieptCommand);
 
