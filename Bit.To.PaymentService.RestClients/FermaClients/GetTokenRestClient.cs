@@ -13,15 +13,15 @@ using RestSharp;
 
 namespace Bit.To.PaymentService.RestClients.FermaClients
 {
-    public class GetTokenRestClient: BaseFermaRestClient, IQueryHandler<GetToken, FermaAuthDto>
+    public class GetTokenRestClient: BaseFermaRestClient, IQueryHandler<GetToken, FermaAuthResponse>
     {
         private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
         public GetTokenRestClient(string baseUrl, string resource):base(null, baseUrl, resource)
         {
         }
-        public FermaAuthDto Execute(GetToken query)
+        public FermaAuthResponse Execute(GetToken query)
         {
-            var response = ExecutePost<FermaAuthDto, GetToken>(query);
+            var response = ExecutePost<FermaAuthResponse, GetToken>(query);
 
             if (response == null)
                 return null;

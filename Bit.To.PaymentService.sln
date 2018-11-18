@@ -15,6 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.PaymentService.RestC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.PaymentService.Abstractions", "Bit.To.PaymentService.Abstractions\Bit.To.PaymentService.Abstractions.csproj", "{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLSripts", "SQLSripts", "{F2CB3167-DDFD-49B4-BF0C-0240058CE5C1}"
+	ProjectSection(SolutionItems) = preProject
+		CreateDb.sql = CreateDb.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

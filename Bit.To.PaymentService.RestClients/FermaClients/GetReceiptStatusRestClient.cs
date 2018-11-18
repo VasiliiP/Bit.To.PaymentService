@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Bit.To.PaymentService.RestClients.FermaClients
 {
-    public class GetReceiptStatusRestClient : BaseFermaRestClient, IQueryHandler<GetReceiptStatus, ReceiptStatusDto>
+    public class GetReceiptStatusRestClient : BaseFermaRestClient, IQueryHandler<GetReceiptStatus, ReceiptStatusResponse>
     {
         private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
 
@@ -15,9 +15,9 @@ namespace Bit.To.PaymentService.RestClients.FermaClients
         {
         }
 
-        public ReceiptStatusDto Execute(GetReceiptStatus query)
+        public ReceiptStatusResponse Execute(GetReceiptStatus query)
         {
-            var response = ExecutePost<ReceiptStatusDto, GetReceiptStatus>(query);
+            var response = ExecutePost<ReceiptStatusResponse, GetReceiptStatus>(query);
 
             if (response == null)
                 return null;

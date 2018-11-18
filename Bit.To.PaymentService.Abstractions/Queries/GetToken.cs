@@ -7,7 +7,7 @@ using Bit.To.PaymentService.Models;
 
 namespace Bit.To.PaymentService.Abstractions.Queries
 {
-    public class GetToken : Query<FermaAuthDto>
+    public class GetToken : Query<FermaAuthResponse>
     {
         public string Login { get; set; }
         public string Password { get; set; }

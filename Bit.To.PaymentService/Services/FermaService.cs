@@ -63,7 +63,7 @@ namespace Bit.To.PaymentService.Services
 
             var handler = new GetTokenRestClient(_fermaBaseUrl, _authResource);
             var dto = handler.Execute(getTokenQuery);
-            FermaAuthDto = FermaAuth.FromDto(dto);
+            FermaAuthDto = FermaAuth.FromResponse(dto);
             return FermaAuthDto.AuthToken;
         }
        

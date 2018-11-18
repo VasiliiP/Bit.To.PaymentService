@@ -3,7 +3,7 @@ using System;
 
 namespace Bit.To.PaymentService.Abstractions.Queries
 {
-    public class GetReceiptStatus : Query<ReceiptStatusDto>
+    public class GetReceiptStatus : Query<ReceiptStatusResponse>
     {
         public Request Request { get; set; }
     }

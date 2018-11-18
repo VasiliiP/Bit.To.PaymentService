@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Bit.To.PaymentService.Abstractions.Models
 {
-    public class ReceiptStatusDto: BaseFermaResponse
+    public class ReceiptStatusResponse: BaseFermaResponse
     {
         public ReceiptStatusData Data { get; set; }
     }

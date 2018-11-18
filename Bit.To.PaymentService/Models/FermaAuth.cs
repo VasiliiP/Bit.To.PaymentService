@@ -21,15 +21,15 @@ namespace Bit.To.PaymentService.Models
             }
         }
 
-        public static FermaAuth FromDto(FermaAuthDto dto)
+        public static FermaAuth FromResponse(FermaAuthResponse response)
         {
-            if (dto.Data == null)
+            if (response.Data == null)
                 return null;
 
             var result = new FermaAuth
             {
-                AuthToken = dto.Data.AuthToken,
-                ExpirationDateUtc = dto.Data.ExpirationDateUtc
+                AuthToken = response.Data.AuthToken,
+                ExpirationDateUtc = response.Data.ExpirationDateUtc
             };
             return result;
         }

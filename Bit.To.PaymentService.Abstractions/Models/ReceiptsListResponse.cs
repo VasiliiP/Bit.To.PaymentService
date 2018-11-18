@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bit.To.PaymentService.Abstractions.Models
 {
-    public class ReceiptsListDto: BaseFermaResponse
+    public class ReceiptsListResponse: BaseFermaResponse
     { 
         public List<Datum> Data { get; set; }
     }

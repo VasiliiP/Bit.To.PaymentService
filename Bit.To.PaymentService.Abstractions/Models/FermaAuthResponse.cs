@@ -7,7 +7,7 @@ using Bit.To.PaymentService.Abstractions.Models;
 
 namespace Bit.To.PaymentService.Models
 {
-    public class FermaAuthDto: BaseFermaResponse
+    public class FermaAuthResponse: BaseFermaResponse
     {
         public FermaAuthData Data { get; set; }
     }

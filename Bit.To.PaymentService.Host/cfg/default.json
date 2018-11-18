@@ -3,7 +3,7 @@
     "ServiceName": "bit.to.paymentservice",
     "ServiceDescription": "Payment service",
     "ConnectionStrings": {
-        "email": "Data Source=localhost;Initial Catalog=pay;Persist Security Info=True;User ID=user;Password=userpassword"
+        "payment": "Data Source=localhost;Initial Catalog=PaymentDB;Persist Security Info=True;User ID=puser;Password=pay123"
     },
     "LogPath": ".\\logs",
     "SvcMetaTitle": "API Payment service",
