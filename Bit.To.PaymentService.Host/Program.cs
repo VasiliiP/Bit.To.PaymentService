@@ -131,6 +131,8 @@ namespace Bit.To.PaymentService.Host
                 .WithParameter("fermaBaseUrl", config["FermaBaseUrl"].AsString())
                 .WithParameter("authResource", config["AuthResource"].AsString())
                 .WithParameter("createReceiptResource", config["CreateReceiptResource"].AsString())
+                .WithParameter("getReceiptStatusResource", config["GetReceiptStatusResource"].AsString())
+                .WithParameter("getReceiptsListResourse", config["GetReceiptsListResourse"].AsString())
                 .WithParameter("inn", config["Inn"].AsString())
                 .AsImplementedInterfaces();
 

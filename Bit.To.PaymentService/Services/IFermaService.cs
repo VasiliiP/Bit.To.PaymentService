@@ -2,6 +2,7 @@
 {
     public interface IFermaService
     {
-        void CreateReciept();
+        void TestMethods();
+        void GetList();
     }
 }

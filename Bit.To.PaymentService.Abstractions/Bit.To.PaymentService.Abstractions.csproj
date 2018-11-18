@@ -33,8 +33,12 @@
     <Reference Include="Bit.Cqrs.Abstractions, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Bit.Cqrs.Abstractions.2.1.0\lib\net40\Bit.Cqrs.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,14 +48,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CreateReceipt.cs" />
+    <Compile Include="Commands\CreateReceiptResponse.cs" />
+    <Compile Include="Models\BaseFermaResponse.cs" />
+    <Compile Include="Models\ReceiptsListDto.cs" />
+    <Compile Include="Models\ReceiptStatusDto.cs" />
+    <Compile Include="Models\ReceiptStatusEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetReceiptsList.cs" />
+    <Compile Include="Queries\GetReceiptStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Queries\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

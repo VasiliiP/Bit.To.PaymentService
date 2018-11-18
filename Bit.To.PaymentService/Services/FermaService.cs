@@ -6,7 +6,9 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using Bit.To.PaymentService.Abstractions.Queries;
 using Bit.To.PaymentService.RestClients;
+using Bit.To.PaymentService.RestClients.FermaClients;
 
 namespace Bit.To.PaymentService.Services
 {
@@ -18,7 +20,9 @@ namespace Bit.To.PaymentService.Services
         private readonly string _authResource;
         private readonly string _inn;
         private readonly string _createReceiptResource;
-        private FermaAuthData FermaAuthData { get; set; }
+        private readonly string _getReceiptStatusResource;
+        private readonly string _getReceiptsListResourse;
+        private FermaAuth FermaAuth { get; set; }
         private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
         private readonly IReceiptFactory ReceiptFactory;
 
@@ -28,7 +32,9 @@ namespace Bit.To.PaymentService.Services
                             string fermaBaseUrl, 
                             string authResource, 
                             string createReceiptResource, 
-                            string inn)
+                            string inn, 
+                            string getReceiptStatusResource, 
+                            string getReceiptsListResourse)
         {
             ReceiptFactory = receiptFactory;
             _fermaLogin = fermaLogin;
@@ -37,6 +43,8 @@ namespace Bit.To.PaymentService.Services
             _authResource = authResource;
             _createReceiptResource = createReceiptResource;
             _inn = inn;
+            _getReceiptStatusResource = getReceiptStatusResource;
+            _getReceiptsListResourse = getReceiptsListResourse;
         }
 
         /// <summary>
@@ -44,8 +52,8 @@ namespace Bit.To.PaymentService.Services
         /// </summary>
         private string GetToken()
         {
-            if (FermaAuthData != null && FermaAuthData.IsValid)
-                return FermaAuthData.AuthToken;
+            if (FermaAuth != null && FermaAuth.IsValid)
+                return FermaAuth.Data.AuthToken;
 
             var client = new RestClient { BaseUrl = new System.Uri(_fermaBaseUrl) };
             var loginRequest = new RestRequest(_authResource, Method.POST);
@@ -55,7 +63,7 @@ namespace Bit.To.PaymentService.Services
                 Password = _fermaPassword
             });
             loginRequest.AddParameter("application/json", body, ParameterType.RequestBody);
-            var response = client.Execute<FermaAuthData>(loginRequest);
+            var response = client.Execute<FermaAuth>(loginRequest);
             if (response.ErrorException != null)
             {
                 const string message = "Error retrieving response. Check inner details for more info.";
@@ -70,16 +78,36 @@ namespace Bit.To.PaymentService.Services
                 throw exception;
             }
 
-            FermaAuthData = response.Data;
-            return FermaAuthData.AuthToken;
+            FermaAuth = response.Data;
+            return FermaAuth.Data.AuthToken;
         }
        
 
-        public void CreateReciept()
+        public void TestMethods()
         {
-            var cmd = ReceiptFactory.Create(_inn);
-            var handler = new CreateRecieptRestClient(GetToken(), _fermaBaseUrl, _createReceiptResource);
-            handler.Execute(cmd);
+            //создание чека
+            var createRecieptCommand = ReceiptFactory.Create(_inn);
+            var createRecieptHandler = new CreateRecieptRestClient(GetToken(), _fermaBaseUrl, _createReceiptResource);
+            createRecieptHandler.Execute(createRecieptCommand);
+
+            //проверка статуса созданного чека
+            var getReceiptStatusQuery = new GetReceiptStatus
+            {
+                Request = new Request {ReceiptId = createRecieptHandler.Response.Data.ReceiptId}
+            };
+            var getReceiptStatusHandler = new GetReceiptStatusRestClient(GetToken(), _fermaBaseUrl, _getReceiptStatusResource);
+            var status = getReceiptStatusHandler.Execute(getReceiptStatusQuery);
+        }
+
+        public void GetList()
+        {
+            //Запрос на получение всех созданных чеков со вчерашнего дня
+            var getReceiptsListQuery = new GetReceiptsList
+            {
+                Request = new GetReceiptsListRequest {StartDateUtc = DateTime.Today.AddDays(-1)}
+            };
+            var hadler = new GetReceiptsListRestClient(GetToken(), _fermaBaseUrl, _getReceiptsListResourse);
+            hadler.Execute(getReceiptsListQuery);
         }
     }
 }

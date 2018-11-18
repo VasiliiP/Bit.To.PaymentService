@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bit.To.PaymentService.Abstractions.Commands
 {
-    public class CreateReceipt: Command
+    public class CreateReceipt : Command
     {
-        public Guid Id { get; set; }
-        public ReceiptRequest Request { get; set; }
+        public CreateReceiptRequest Request { get; set; }
     }
 
-    public class ReceiptRequest
+    public class CreateReceiptRequest
     {
         public string Inn { get; set; }
         public string Type { get; set; }
@@ -38,10 +34,6 @@ namespace Bit.To.PaymentService.Abstractions.Commands
         public string Vat { get; set; }
     }
 
-    public class ReceiptResponse
-    {
-        public string Status { get; set; }
-        public List<string> Errors { get; set; }
-
-    }
 }
+
+

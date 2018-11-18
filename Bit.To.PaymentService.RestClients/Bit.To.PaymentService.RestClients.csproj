@@ -51,7 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
+    <Compile Include="FermaClients\BaseFermaRestClient.cs" />
     <Compile Include="FermaClients\CreateRecieptRestClient.cs" />
+    <Compile Include="FermaClients\GetReceiptsListRestClient.cs" />
+    <Compile Include="FermaClients\GetReceiptStatusRestClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

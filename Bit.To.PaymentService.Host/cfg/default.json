@@ -3,7 +3,7 @@
     "ServiceName": "bit.to.paymentservice",
     "ServiceDescription": "Payment service",
     "ConnectionStrings": {
-        "email": "Data Source=localhost;Initial Catalog=to_email;Persist Security Info=True;User ID=user;Password=userpassword"
+        "email": "Data Source=localhost;Initial Catalog=pay;Persist Security Info=True;User ID=user;Password=userpassword"
     },
     "LogPath": ".\\logs",
     "SvcMetaTitle": "API Payment service",
@@ -11,11 +11,13 @@
     "SvcMetaDescription": "",
     "SvcMetaContact": "admin@rmetrika.ru",
     "SwaggerResourceListingPath": "swagger/",
-    "FermaLogin": "gollandec@yandex.ru",
-    "FermaPassword": "jasoncey",
-    "FermaBaseUrl": "https://ofd.ru/",
+    "FermaLogin": "fermatest1",
+    "FermaPassword": "Hjsf3321klsadfAA",
+    "FermaBaseUrl": "https://ferma.ofd.ru/",
     "AuthResource": "api/Authorization/CreateAuthToken",
     "CreateReceiptResource": "api/kkt/cloud/receipt",
+    "GetReceiptStatusResource": "api/kkt/cloud/status",
+    "GetReceiptsListResourse": "api/kkt/cloud/list",
     "Inn": "2539112357"
 
 }
