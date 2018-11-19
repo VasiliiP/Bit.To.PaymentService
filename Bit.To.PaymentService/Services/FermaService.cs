@@ -22,8 +22,8 @@ namespace Bit.To.PaymentService.Services
         private readonly string _createReceiptResource;
         private readonly string _getReceiptStatusResource;
         private readonly string _getReceiptsListResourse;
-        private FermaAuth FermaAuthDto { get; set; }
-        private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
+        private FermaAuth FermaAuth { get; set; }
+
         private readonly IReceiptFactory _receiptFactory;
 
         public FermaService(IReceiptFactory receiptFactory, 
@@ -52,8 +52,8 @@ namespace Bit.To.PaymentService.Services
         /// </summary>
         private string GetToken()
         {
-            if (FermaAuthDto != null && FermaAuthDto.IsValid)
-                return FermaAuthDto.AuthToken;
+            if (FermaAuth != null && FermaAuth.IsValid)
+                return FermaAuth.AuthToken;
 
             var getTokenQuery = new GetToken
             {
@@ -63,8 +63,8 @@ namespace Bit.To.PaymentService.Services
 
             var handler = new GetTokenRestClient(_fermaBaseUrl, _authResource);
             var dto = handler.Execute(getTokenQuery);
-            FermaAuthDto = FermaAuth.FromResponse(dto);
-            return FermaAuthDto.AuthToken;
+            FermaAuth = FermaAuth.FromResponse(dto);
+            return FermaAuth.AuthToken;
         }
        
 
