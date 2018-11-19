@@ -19,7 +19,7 @@ namespace Bit.To.PaymentService.Web
                 param =>
                 {
                     fermaService.TestMethods();
-                    return HttpStatusCode.OK;
+                    return new Response().WithStatusCode(Nancy.HttpStatusCode.OK);
                 },
                 null,
                 nameof(CreateReceiptModule));
@@ -29,7 +29,7 @@ namespace Bit.To.PaymentService.Web
                 param =>
                 {              
                     fermaService.GetList();
-                    return HttpStatusCode.OK;
+                    return new Response().WithStatusCode(Nancy.HttpStatusCode.OK);
                 },
                 null,
                 nameof(CreateReceiptModule));
