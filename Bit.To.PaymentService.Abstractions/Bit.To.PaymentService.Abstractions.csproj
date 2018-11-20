@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="Commands\CreateReceipt.cs" />
     <Compile Include="Models\CreateReceiptResponse.cs" />
     <Compile Include="Models\BaseFermaResponse.cs" />

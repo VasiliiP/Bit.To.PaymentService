@@ -4,8 +4,7 @@ namespace Bit.To.PaymentService.Services
 {
     public interface IFermaService
     {
-        void TestMethods();
+        string GetToken();
         void GetList();
-        ICommandHandler<CreateReceipt> GetCreateRecieptHandler();
     }
 }

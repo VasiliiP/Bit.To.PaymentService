@@ -1,36 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bit.To.PaymentService.Abstractions.Commands;
-using Bit.To.PaymentService.RestClients;
+﻿using Bit.To.PaymentService.Abstractions.Commands;
 using Bit.To.PaymentService.Services;
 using Nancy;
 using Nancy.Extensions;
-using Nancy.Responses;
 using Newtonsoft.Json;
-using HttpStatusCode = System.Net.HttpStatusCode;
+using System;
 
 namespace Bit.To.PaymentService.Web
 {
     public sealed class CreateReceiptModule : NancyModule
     {
-        public CreateReceiptModule(IFermaService fermaService, IReceiptFactory receiptFactory, string modulePath = "/") : base(modulePath)
+        public CreateReceiptModule(IFermaService fermaService, ICommandHandler<CreateReceipt> handler, string modulePath = "/") : base(modulePath)
         {
             Post(
                 "/receipt",
                 param =>
                 {
                     var cmd = CreateCmd(Context, param);
-
                     if (cmd == null)
-                        return new Response().WithStatusCode(Nancy.HttpStatusCode.BadRequest);
+                        return new Response().WithStatusCode(HttpStatusCode.BadRequest);
 
-                    var createRecieptHandler = fermaService.GetCreateRecieptHandler();
-                    createRecieptHandler.Execute(cmd);
-
-                    return new Response().WithStatusCode(Nancy.HttpStatusCode.OK);
+                    try
+                    {
+                        handler.Execute(cmd);
+                    }
+                    catch (Exception e)
+                    {
+                        return new Response().WithStatusCode(HttpStatusCode.Accepted);
+                    }                  
+                    return new Response().WithStatusCode(HttpStatusCode.BadRequest);
                 },
                 null,
                 nameof(CreateReceiptModule));

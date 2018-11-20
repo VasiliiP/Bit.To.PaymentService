@@ -90,7 +90,7 @@ namespace Bit.To.PaymentService.Persistence
             private static List<ItemDto> Convert(List<Item> items)
             {
                 var list = new List<ItemDto>();
-                foreach (var item in list)
+                foreach (var item in items)
                 {
                     list.Add(new ItemDto
                     {
@@ -103,8 +103,6 @@ namespace Bit.To.PaymentService.Persistence
 
                 return list;
             }
-
-
 
             public ReceiptItem Convert(Dto dto)
             {

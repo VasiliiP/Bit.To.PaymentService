@@ -1,5 +1,6 @@
 ﻿using Bit.To.PaymentService.Models;
 using System;
+using Bit.To.PaymentService.Abstractions.Commands;
 
 namespace Bit.To.PaymentService.Persistence
 {

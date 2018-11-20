@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Autofac;
 using Bit.Persistence;
+using Bit.To.PaymentService.CommandHandlers;
 using Bit.To.PaymentService.Persistence;
 using Bit.To.PaymentService.Services;
 using Bit.To.PaymentService.Web;
@@ -135,12 +136,16 @@ namespace Bit.To.PaymentService.Host
                 .WithParameter("fermaPassword", config["FermaPassword"].AsString())
                 .WithParameter("fermaBaseUrl", config["FermaBaseUrl"].AsString())
                 .WithParameter("authResource", config["AuthResource"].AsString())
-                .WithParameter("createReceiptResource", config["CreateReceiptResource"].AsString())
                 .WithParameter("getReceiptStatusResource", config["GetReceiptStatusResource"].AsString())
                 .WithParameter("getReceiptsListResourse", config["GetReceiptsListResourse"].AsString())
                 .WithParameter("inn", config["Inn"].AsString())
                 .AsImplementedInterfaces()
                 .SingleInstance();
+
+            builder.RegisterType<CreateReceiptHandler>()
+                .WithParameter("fermaBaseUrl", config["FermaBaseUrl"].AsString())
+                .WithParameter("createReceiptResource", config["CreateReceiptResource"].AsString())
+                .AsImplementedInterfaces();
 
             builder.RegisterType<CreateReceiptModule>();
             builder.RegisterType<ReceiptFactory>().AsImplementedInterfaces();
