@@ -52,7 +52,7 @@ namespace Bit.To.PaymentService.Persistence
 
         public static QueryObject<Dto> SelectById(Guid key)
         {
-            return new QueryObject<Dto>($"SELECT * FROM {Table} WHERE Id=@key", new { key=1 });
+            return new QueryObject<Dto>($"SELECT * FROM {Table} WHERE Id=@key", new { key });
         }
 
         public class Mapper

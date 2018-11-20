@@ -8,10 +8,10 @@ namespace Bit.To.PaymentService.Abstractions.Models
 {
     public class ReceiptsListResponse: BaseFermaResponse
     { 
-        public List<Datum> Data { get; set; }
+        public List<ReceiptItemJson> Data { get; set; }
     }
 
-    public class Datum
+    public class ReceiptItemJson
     {
         public string ReceiptId { get; set; }
         public int StatusCode { get; set; }
@@ -47,13 +47,13 @@ namespace Bit.To.PaymentService.Abstractions.Models
         public string TaxationSystem { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public object InstallmentPlace { get; set; }
-        public object InstallmentAddress { get; set; }
-        public object AutomaticDeviceNumber { get; set; }
-        public List<Item> Items { get; set; }
+        public string InstallmentPlace { get; set; }
+        public string InstallmentAddress { get; set; }
+        public string AutomaticDeviceNumber { get; set; }
+        public List<ItemJson> Items { get; set; }
     }
 
-    public class Item
+    public class ItemJson
     {
         public string Label { get; set; }
         public int Price { get; set; }

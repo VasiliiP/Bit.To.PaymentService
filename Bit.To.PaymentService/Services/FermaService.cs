@@ -1,14 +1,10 @@
-﻿using Bit.To.PaymentService.Abstractions.Commands;
-using Bit.To.PaymentService.Logging;
+﻿using Bit.To.PaymentService.Abstractions.Queries;
 using Bit.To.PaymentService.Models;
-using Newtonsoft.Json;
-using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using Bit.To.PaymentService.Abstractions.Queries;
+using Bit.To.PaymentService.Persistence;
 using Bit.To.PaymentService.RestClients;
 using Bit.To.PaymentService.RestClients.FermaClients;
+using System;
+using Bit.To.PaymentService.Abstractions.Commands;
 
 namespace Bit.To.PaymentService.Services
 {
@@ -25,8 +21,10 @@ namespace Bit.To.PaymentService.Services
         private FermaAuth FermaAuth { get; set; }
 
         private readonly IReceiptFactory _receiptFactory;
+        private readonly IReseiptItemRepository _repository;
 
-        public FermaService(IReceiptFactory receiptFactory, 
+        public FermaService(IReceiptFactory receiptFactory,
+                            IReseiptItemRepository repository,
                             string fermaLogin, 
                             string fermaPassword, 
                             string fermaBaseUrl, 
@@ -36,6 +34,7 @@ namespace Bit.To.PaymentService.Services
                             string getReceiptStatusResource, 
                             string getReceiptsListResourse)
         {
+            _repository = repository;
             _receiptFactory = receiptFactory;
             _fermaLogin = fermaLogin;
             _fermaPassword = fermaPassword;
@@ -66,22 +65,26 @@ namespace Bit.To.PaymentService.Services
             FermaAuth = FermaAuth.FromResponse(dto);
             return FermaAuth.AuthToken;
         }
-       
+
+        public ICommandHandler<CreateReceipt> GetCreateRecieptHandler()
+        {
+            return new CreateRecieptRestClient(GetToken(), _fermaBaseUrl, _createReceiptResource);
+        }
 
         public void TestMethods()
         {
             //создание чека
-            var createRecieptCommand = _receiptFactory.Create(_inn);
-            var createRecieptHandler = new CreateRecieptRestClient(GetToken(), _fermaBaseUrl, _createReceiptResource);
-            createRecieptHandler.Execute(createRecieptCommand);
+            //var createRecieptCommand = _receiptFactory.Create(_inn);
+            //var createRecieptHandler = new CreateRecieptRestClient(GetToken(), _fermaBaseUrl, _createReceiptResource);
+            //createRecieptHandler.Execute(createRecieptCommand);
 
             //проверка статуса созданного чека
-            var getReceiptStatusQuery = new GetReceiptStatus
-            {
-                Request = new Request {ReceiptId = createRecieptHandler.Response.Data.ReceiptId}
-            };
-            var getReceiptStatusHandler = new GetReceiptStatusRestClient(GetToken(), _fermaBaseUrl, _getReceiptStatusResource);
-            var status = getReceiptStatusHandler.Execute(getReceiptStatusQuery);
+            //var getReceiptStatusQuery = new GetReceiptStatus
+            //{
+            //    Request = new Request {ReceiptId = createRecieptHandler.Response.Data.ReceiptId}
+            //};
+            //var getReceiptStatusHandler = new GetReceiptStatusRestClient(GetToken(), _fermaBaseUrl, _getReceiptStatusResource);
+            //var status = getReceiptStatusHandler.Execute(getReceiptStatusQuery);
         }
 
         public void GetList()
@@ -92,7 +95,11 @@ namespace Bit.To.PaymentService.Services
                 Request = new GetReceiptsListRequest {StartDateUtc = DateTime.Today.AddDays(-1)}
             };
             var hadler = new GetReceiptsListRestClient(GetToken(), _fermaBaseUrl, _getReceiptsListResourse);
-            hadler.Execute(getReceiptsListQuery);
+            var receipts = hadler.Execute(getReceiptsListQuery);
+
+            //Сделано для проверки: берем любой чек и сохраняем его в дб
+            var receipt = _receiptFactory.ItemFromJson(receipts.Data.Find(x => true));
+            _repository.Save(receipt);
         }
     }
 }

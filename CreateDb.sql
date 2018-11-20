@@ -7,7 +7,7 @@ GO
 USE [PaymentDB]
 IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'puser')
 	BEGIN
-		CREATE LOGIN [puser] WITH PASSWORD = 'pay123'
+		CREATE LOGIN [puser] WITH PASSWORD = 'pay123qaz!'
 		CREATE USER [puser] FOR LOGIN [puser]
 		EXEC sp_addrolemember N'db_owner', N'puser'
 	END
@@ -186,3 +186,10 @@ INSERT INTO [dbo].[ReceiptItems]
            ,CAST(400.00 AS decimal(6,2))
            ,N'Vat10')
 GO
+
+SELECT R.Id ,R.UID ,R.StatusCode ,R.StatusName ,R.StatusMessage ,R.Modified ,R.ReceiptDate
+      ,R.InvoiceId ,R.Inn ,R.Type ,R.CashboxId ,R.TaxSystem ,R.Email ,R.Phone ,R.Iplace ,R.Iaddress
+      ,R.Dnumber, C.DeviceId, C.Rnm, C.Zn, C.Fn, C.Fdn, C.Fpd 
+  FROM [dbo].[Receipts] R
+  JOIN Cashboxes C ON C.Id = R.CashboxId
+  WHERE R.Id = 1

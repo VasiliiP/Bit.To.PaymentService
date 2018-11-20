@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CreateReceipt.cs" />
-    <Compile Include="Commands\CreateReceiptResponse.cs" />
+    <Compile Include="Models\CreateReceiptResponse.cs" />
     <Compile Include="Models\BaseFermaResponse.cs" />
     <Compile Include="Models\FermaAuthResponse.cs" />
     <Compile Include="Models\ReceiptsListResponse.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Autofac;
 using Bit.Persistence;
+using Bit.To.PaymentService.Persistence;
 using Bit.To.PaymentService.Services;
 using Bit.To.PaymentService.Web;
 using Bit.Validation;
@@ -124,7 +125,11 @@ namespace Bit.To.PaymentService.Host
         private static IContainer CreateContainer(IAppConfiguration config)
         {
             var builder = new ContainerBuilder();
-            
+
+            builder.RegisterType<ReseiptItemRepository>()
+                .WithParameter("connectionFactory", new SqlConnectionFactory(config.ConnectionString("payment"))).AsImplementedInterfaces();
+            builder.RegisterType<ReceiptsDbContext.Mapper>();
+
             builder.RegisterType<FermaService>()
                 .WithParameter("fermaLogin", config["FermaLogin"].AsString())
                 .WithParameter("fermaPassword", config["FermaPassword"].AsString())
@@ -138,7 +143,6 @@ namespace Bit.To.PaymentService.Host
                 .SingleInstance();
 
             builder.RegisterType<CreateReceiptModule>();
-            builder.RegisterType<CreateReceiptModule>().AsImplementedInterfaces();
             builder.RegisterType<ReceiptFactory>().AsImplementedInterfaces();
             builder.RegisterType<SwaggerModule>();
 

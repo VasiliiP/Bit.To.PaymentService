@@ -1,4 +1,5 @@
-﻿using Bit.To.PaymentService.Abstractions.Commands;
+﻿using Bit.To.PaymentService.Abstractions;
+using Bit.To.PaymentService.Abstractions.Commands;
 using Bit.To.PaymentService.RestClients.FermaClients;
 using Bit.To.PaymentService.RestClients.Logging;
 
