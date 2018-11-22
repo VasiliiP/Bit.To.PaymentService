@@ -37,7 +37,7 @@ namespace Bit.To.PaymentService.CommandHandlers
                 response.Request.Resource, payload.Status, payload.Data.ReceiptId);
             Response = payload;
             
-            //_repository.Save(cmd, new Guid(payload.Data.ReceiptId));
+            _repository.Save(cmd, new Guid(payload.Data.ReceiptId));
         }
     }
 }

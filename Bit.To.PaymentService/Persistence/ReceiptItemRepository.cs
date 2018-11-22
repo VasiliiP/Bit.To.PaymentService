@@ -3,6 +3,7 @@ using Bit.Persistence.Dapper;
 using Bit.To.PaymentService.Models;
 using Dapper.Contrib.Extensions;
 using System;
+using Bit.To.PaymentService.Abstractions.Commands;
 
 namespace Bit.To.PaymentService.Persistence
 {
@@ -22,7 +23,7 @@ namespace Bit.To.PaymentService.Persistence
         {
             using (var connection = _connectionFactory.Create())
             {
-                var dto = connection.Get<ReceiptsDbContext.Dto>(id);
+                var dto = connection.Get<ReceiptsDbContext.ReceiptDto>(id);
                 return dto == null ? null : _mapper.Convert(dto);
             }
         }
@@ -40,7 +41,7 @@ namespace Bit.To.PaymentService.Persistence
         {
             using (var connection = _connectionFactory.Create())
             {
-                var dto = _mapper.Convert(item);
+                var dto = _mapper.ReceiptDtoFromJson(item);
                 if (!item.HasId)
                 {
                     connection.Insert(dto);
@@ -48,6 +49,19 @@ namespace Bit.To.PaymentService.Persistence
                 }
                 else
                     connection.Update(dto);
+            }
+        }
+
+        public void Save(CreateReceipt cmd, Guid guid)
+        {
+            using (var connection = _connectionFactory.Create())
+            {
+                var receiptDto = _mapper.ReceiptDtoFromJson(cmd);
+                receiptDto.UID = guid;
+                var id = connection.Insert(receiptDto);
+
+                var listItemsDto = _mapper.ListItemsDtoFromJson(cmd.Request.CustomerReceipt.Items, id);
+                connection.Insert(listItemsDto);
             }
         }
     }

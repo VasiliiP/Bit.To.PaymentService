@@ -9,5 +9,6 @@ namespace Bit.To.PaymentService.Persistence
         ReceiptItem Find(long id);
         ReceiptItem FindByKey(Guid key);
         void Save(ReceiptItem item);
+        void Save(CreateReceipt item, Guid guid);
     }
 }

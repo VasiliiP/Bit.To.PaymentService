@@ -25,7 +25,7 @@ namespace Bit.To.PaymentService.Web
                     }
                     catch (Exception e)
                     {
-                        return new Response().WithStatusCode(HttpStatusCode.Accepted);
+                        return new Response().WithStatusCode(HttpStatusCode.BadGateway);
                     }                  
                     return new Response().WithStatusCode(HttpStatusCode.BadRequest);
                 },

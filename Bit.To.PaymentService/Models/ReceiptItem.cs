@@ -10,8 +10,8 @@ namespace Bit.To.PaymentService.Models
         public int StatusCode { get; set; }
         public string StatusName { get; set; }
         public string StatusMessage { get; set; }
-        public DateTime ModifiedDateUtc { get; set; }
-        public DateTime ReceiptDateUtc { get; set; }
+        public DateTime? ModifiedDateUtc { get; set; }
+        public DateTime? ReceiptDateUtc { get; set; }
         public string InvoiceId { get; set; }
         public Cashbox CashboxInfoHolder { get; set; }
         public string Inn { get; set; }

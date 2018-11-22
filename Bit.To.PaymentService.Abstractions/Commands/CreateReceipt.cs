@@ -22,14 +22,14 @@ namespace Bit.To.PaymentService.Abstractions.Commands
         public string TaxationSystem { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public ICollection<RecieptItem> Items { get; set; }
+        public List<RecieptItem> Items { get; set; }
     }
 
     public class RecieptItem
     {
         public string Label { get; set; }
         public decimal Price { get; set; }
-        public float Quantity { get; set; }
+        public decimal Quantity { get; set; }
         public decimal Amount { get; set; }
         public string Vat { get; set; }
     }

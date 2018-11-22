@@ -3,23 +3,26 @@ using Bit.To.PaymentService.Models;
 using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
+using Bit.To.PaymentService.Abstractions.Commands;
 
 namespace Bit.To.PaymentService.Persistence
 {
     public class ReceiptsDbContext
     {
-        private const string Table = "Receipts";
+        private const string RECEIPTS_TABLE = "Receipts";
+        private const string CASHBOXES_TABLE = "Cashboxes";
+        private const string RECEIPTITEMS_TABLE = "ReceiptItems";
 
-        [Table(Table)]
-        public class Dto
+        [Table(RECEIPTS_TABLE)]
+        public class ReceiptDto
         {
             public long Id { get; set; }
             public Guid UID { get; set; }
             public int StatusCode { get; set; }
             public string StatusName { get; set; }
             public string StatusMessage { get; set; }
-            public DateTime Modified { get; set; }
-            public DateTime ReceiptDate { get; set; }
+            public DateTime? Modified { get; set; }
+            public DateTime? ReceiptDate { get; set; }
             public string InvoiceId { get; set; }
             public string Type { get; set; }
             public string Email { get; set; }
@@ -28,21 +31,14 @@ namespace Bit.To.PaymentService.Persistence
             public string Iaddress { get; set; }
             public string Dnumber { get; set; }
             public string Inn { get; set; }
-            public int DeviceId { get; set; }
-            public string Rnm { get; set; }
-            public string Zn { get; set; }
-            public string Fn { get; set; }
-            public string Fdn { get; set; }
-            public string Fpd { get; set; }
             public string TaxSystem { get; set; }
-            public List<ItemDto> Items { get; set; }
         }
 
-        [Table("ReceiptItems")]
+        [Table(RECEIPTITEMS_TABLE)]
         public class ItemDto
         {
             public long Id { get; set; }
-            public int ReceiptId { get; set; }
+            public long ReceiptId { get; set; }
             public string Label { get; set; }
             public decimal Price { get; set; }
             public decimal Quantity { get; set; }
@@ -50,16 +46,32 @@ namespace Bit.To.PaymentService.Persistence
             public string Vat { get; set; }
         }
 
-        public static QueryObject<Dto> SelectById(Guid key)
+        [Table(CASHBOXES_TABLE)]
+        public class CashboxDto
         {
-            return new QueryObject<Dto>($"SELECT * FROM {Table} WHERE Id=@key", new { key });
+            public long Id { get; set; }
+            public int DeviceId { get; set; }
+            public string Rnm { get; set; }
+            public string Zn { get; set; }
+            public string Fn { get; set; }
+            public string Fdn { get; set; }
+            public string Fpd { get; set; }
+        }
+
+
+        public static QueryObject<ReceiptDto> SelectById(Guid key)
+        {
+            return new QueryObject<ReceiptDto>($"SELECT * FROM {RECEIPTS_TABLE} WHERE Id=@key", new { key });
         }
 
         public class Mapper
         {
-            public Dto Convert(ReceiptItem item)
+
+            #region Dto from item
+
+            public ReceiptDto ReceiptDtoFromJson(ReceiptItem item)
             {
-                return new Dto
+                return new ReceiptDto
                 {
                     UID = item.ReceiptId,
                     StatusCode = item.StatusCode,
@@ -75,58 +87,88 @@ namespace Bit.To.PaymentService.Persistence
                     Iaddress = item.InstallmentAddress,
                     Inn = item.Inn,
                     Dnumber = item.AutomaticDeviceNumber,
+                    Id = item.Id,
+                    TaxSystem = item.TaxationSystem
+                };
+            }
+
+            public CashboxDto CashboxDtoFromJson(ReceiptItem item)
+            {
+                return new CashboxDto
+                {
                     DeviceId = item.CashboxInfoHolder.DeviceId,
                     Rnm = item.CashboxInfoHolder.RNM,
                     Zn = item.CashboxInfoHolder.ZN,
                     Fn = item.CashboxInfoHolder.FN,
                     Fdn = item.CashboxInfoHolder.FDN,
                     Fpd = item.CashboxInfoHolder.FPD,
-                    Items = Convert(item.Items),
                     Id = item.Id,
-                    TaxSystem = item.TaxationSystem
                 };
             }
 
-            private static List<ItemDto> Convert(List<Item> items)
+            public List<ItemDto> ListItemsDtoFromJson(List<Item> items, long receiptId)
             {
                 var list = new List<ItemDto>();
                 foreach (var item in items)
                 {
                     list.Add(new ItemDto
                     {
+                        ReceiptId = receiptId,
                         Label = item.Label,
                         Price = item.Price,
                         Amount = item.Amount,
                         Quantity = item.Quantity
                     });
                 }
-
                 return list;
             }
 
-            public ReceiptItem Convert(Dto dto)
+            public ReceiptDto ReceiptDtoFromJson(CreateReceipt cmd)
+            {
+                var dto = new ReceiptDto()
+                {
+                    InvoiceId = cmd.Request.InvoiceId,
+                    Type = cmd.Request.Type,
+                    Email = cmd.Request.CustomerReceipt.Email,
+                    Phone = cmd.Request.CustomerReceipt.Phone,
+                    Inn = cmd.Request.Inn,
+                    TaxSystem = cmd.Request.CustomerReceipt.TaxationSystem
+                };
+                return dto;
+            }
+
+            public List<ItemDto> ListItemsDtoFromJson(List<RecieptItem> items, long receiptId)
+            {
+                var list = new List<ItemDto>();
+                foreach (var item in items)
+                {
+                    list.Add(new ItemDto
+                    {
+                        ReceiptId = receiptId,
+                        Label = item.Label,
+                        Price = item.Price,
+                        Amount = item.Amount,
+                        Quantity = item.Quantity,
+                        Vat = item.Vat
+                    });
+                }
+                return list;
+            }
+
+            #endregion
+
+            public ReceiptItem Convert(ReceiptDto dto)
             {
                 var result = new ReceiptItem
                 {
                     ReceiptId = dto.UID,
                     AutomaticDeviceNumber = dto.Dnumber,
-                    CashboxInfoHolder = new Cashbox()
-                    {
-                        DeviceId = dto.DeviceId,
-                        FDN = dto.Fdn,
-                        FN = dto.Fn,
-                        FPD = dto.Fpd,
-                        Id = dto.Id,
-                        RNM = dto.Rnm,
-                        ZN = dto.Zn
-                    },
                     Email = dto.Email,
                     Id = dto.Id,
                     Inn = dto.Inn,
                     InstallmentAddress = dto.Iaddress,
                     InstallmentPlace = dto.Iplace,
                     InvoiceId = dto.InvoiceId,
-                    Items = Convert(dto.Items),
                     StatusCode = dto.StatusCode,
                     ReceiptDateUtc = dto.ReceiptDate,
                     ModifiedDateUtc = dto.Modified,

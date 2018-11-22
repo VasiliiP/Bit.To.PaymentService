@@ -29,7 +29,7 @@ namespace Bit.To.PaymentService.Services
                             new RecieptItem
                             {
                                 Label = "Tomates",
-                                Quantity = 12.00f,
+                                Quantity = 12.00M,
                                 Price = 40.00M,
                                 Amount = 480M,
                                 Vat = "Vat10"
@@ -37,7 +37,7 @@ namespace Bit.To.PaymentService.Services
                             new RecieptItem
                             {
                                 Label = "Cucumbers",
-                                Quantity = 10.00f,
+                                Quantity = 10.00M,
                                 Price = 40.00M,
                                 Amount = 400M,
                                 Vat = "Vat10"
