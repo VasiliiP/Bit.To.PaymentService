@@ -74,7 +74,9 @@
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="CommandHandlers\CreateReceiptHandler.cs" />
+    <Compile Include="Models\Cashbox.cs" />
     <Compile Include="Models\FermaAuth.cs" />
+    <Compile Include="Models\Receipt.cs" />
     <Compile Include="Models\ReceiptItem.cs" />
     <Compile Include="Persistence\IReseiptItemRepository.cs" />
     <Compile Include="Persistence\ReceiptItemRepository.cs" />
@@ -82,8 +84,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FermaService.cs" />
     <Compile Include="Services\IFermaService.cs" />
-    <Compile Include="Services\IReceiptFactory.cs" />
-    <Compile Include="Services\ReceiptFactory.cs" />
     <Compile Include="Web\CreateReceiptModule.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bit.To.PaymentService.Abstractions.Models;
 
-namespace Bit.To.PaymentService.Models
+namespace Bit.To.PaymentService.RestClients
 {
     public class FermaAuthResponse: BaseFermaResponse
     {

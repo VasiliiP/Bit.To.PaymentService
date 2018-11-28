@@ -8,8 +8,8 @@ namespace Bit.To.PaymentService.Models
 {
     public class FermaAuth
     {
-        public string AuthToken { get; set; }
-        public DateTime ExpirationDateUtc { get; set; }
+        public string AuthToken { get; }
+        public DateTime ExpirationDateUtc { get; }
         public bool IsValid
         {
             get
@@ -21,17 +21,15 @@ namespace Bit.To.PaymentService.Models
             }
         }
 
-        public static FermaAuth FromResponse(FermaAuthResponse response)
+        public static FermaAuth CreateNew(string token, DateTime expDate)
         {
-            if (response.Data == null)
-                return null;
+            return new FermaAuth(token, expDate);
+        }
 
-            var result = new FermaAuth
-            {
-                AuthToken = response.Data.AuthToken,
-                ExpirationDateUtc = response.Data.ExpirationDateUtc
-            };
-            return result;
+        private FermaAuth(string token, DateTime expDate)
+        {
+            AuthToken = token;
+            ExpirationDateUtc = expDate;
         }
     }
 }

@@ -49,12 +49,10 @@
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="Commands\CreateReceipt.cs" />
-    <Compile Include="Models\CreateReceiptResponse.cs" />
-    <Compile Include="Models\BaseFermaResponse.cs" />
-    <Compile Include="Models\FermaAuthResponse.cs" />
-    <Compile Include="Models\ReceiptsListResponse.cs" />
-    <Compile Include="Models\ReceiptStatusResponse.cs" />
-    <Compile Include="Models\ReceiptStatusEnum.cs" />
+    <Compile Include="Models\FermaAuthDto.cs" />
+    <Compile Include="Models\ReceiptDto.cs" />
+    <Compile Include="Models\ReceiptItemDto.cs" />
+    <Compile Include="Models\ReceiptStatusDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetReceiptsList.cs" />
     <Compile Include="Queries\GetReceiptStatus.cs" />

@@ -1,6 +1,6 @@
 ﻿using Bit.To.PaymentService.Abstractions.Models;
 
-namespace Bit.To.PaymentService.Abstractions
+namespace Bit.To.PaymentService.RestClients
 {
     public class CreateReceiptResponse: BaseFermaResponse
     {

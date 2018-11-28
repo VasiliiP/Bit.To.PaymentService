@@ -20,6 +20,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLSripts", "SQLSripts", "{
 		CreateDb.sql = CreateDb.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".test", ".test", "{DDF64713-0EE3-4887-B522-69DD7EB3261D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.PaymentService.Tests", "Bit.To.PaymentService.Tests\Bit.To.PaymentService.Tests.csproj", "{311615CE-B7C8-4F6D-9A60-EBEB6F4675E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +46,10 @@ Global
 		{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{311615CE-B7C8-4F6D-9A60-EBEB6F4675E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{311615CE-B7C8-4F6D-9A60-EBEB6F4675E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{311615CE-B7C8-4F6D-9A60-EBEB6F4675E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{311615CE-B7C8-4F6D-9A60-EBEB6F4675E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +59,7 @@ Global
 		{6A548EAA-F970-4C92-931B-3BDBDCB5A785} = {BBA373CE-6A20-4524-84D5-A064D50FBAF5}
 		{EB935B00-E572-46BD-BC7E-F50229D06001} = {BBA373CE-6A20-4524-84D5-A064D50FBAF5}
 		{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4} = {BBA373CE-6A20-4524-84D5-A064D50FBAF5}
+		{311615CE-B7C8-4F6D-9A60-EBEB6F4675E4} = {DDF64713-0EE3-4887-B522-69DD7EB3261D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {76AE5FDB-5E76-4F86-A5D3-709BD9876805}

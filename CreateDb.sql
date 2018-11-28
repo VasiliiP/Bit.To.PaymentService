@@ -94,12 +94,12 @@ GO
 ALTER TABLE [dbo].[ReceiptItems] CHECK CONSTRAINT [FK_ReceiptItems_Receipts]
 GO
 
-ALTER TABLE [dbo].[Receipts]  WITH CHECK ADD  CONSTRAINT [FK_Receipts_Cashboxes] FOREIGN KEY([CashboxId])
-REFERENCES [dbo].[Cashboxes] ([Id])
-GO
+--ALTER TABLE [dbo].[Receipts]  WITH CHECK ADD  CONSTRAINT [FK_Receipts_Cashboxes] FOREIGN KEY([CashboxId])
+--REFERENCES [dbo].[Cashboxes] ([Id])
+--GO
 
-ALTER TABLE [dbo].[Receipts] CHECK CONSTRAINT [FK_Receipts_Cashboxes]
-GO
+--ALTER TABLE [dbo].[Receipts] CHECK CONSTRAINT [FK_Receipts_Cashboxes]
+--GO
 
 
 ------------------------------------------------------------------------------------------

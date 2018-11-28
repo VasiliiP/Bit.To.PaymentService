@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bit.To.PaymentService.Abstractions.Models
+namespace Bit.To.PaymentService.RestClients
 {
     public class BaseFermaResponse
     {

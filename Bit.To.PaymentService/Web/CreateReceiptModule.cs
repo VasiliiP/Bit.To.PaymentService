@@ -4,12 +4,15 @@ using Nancy;
 using Nancy.Extensions;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using Bit.To.PaymentService.Abstractions.Models;
+using Bit.To.PaymentService.Abstractions.Queries;
 
 namespace Bit.To.PaymentService.Web
 {
     public sealed class CreateReceiptModule : NancyModule
     {
-        public CreateReceiptModule(IFermaService fermaService, ICommandHandler<CreateReceipt> handler, string modulePath = "/") : base(modulePath)
+        public CreateReceiptModule(IFermaService fermaService, ICommandHandler<CreateReceipt> createHandler, IQueryHandler<GetReceiptsList, List<ReceiptDto>> getListHandler, string modulePath = "/") : base(modulePath)
         {
             Post(
                 "/receipt",
@@ -21,13 +24,13 @@ namespace Bit.To.PaymentService.Web
 
                     try
                     {
-                        handler.Execute(cmd);
+                        createHandler.Execute(cmd);
                     }
                     catch (Exception e)
                     {
                         return new Response().WithStatusCode(HttpStatusCode.BadGateway);
                     }                  
-                    return new Response().WithStatusCode(HttpStatusCode.BadRequest);
+                    return new Response().WithStatusCode(HttpStatusCode.OK);
                 },
                 null,
                 nameof(CreateReceiptModule));
@@ -35,8 +38,15 @@ namespace Bit.To.PaymentService.Web
             Get(
                 "/list",
                 param =>
-                {              
-                    fermaService.GetList();
+                {
+                    try
+                    {
+                        var receipts = getListHandler.Execute(new GetReceiptsList{Request = new GetReceiptsListRequest { StartDateUtc = DateTime.Today.AddDays(-1) }});
+                    }
+                    catch (Exception e)
+                    {
+                        return new Response().WithStatusCode(HttpStatusCode.BadGateway);
+                    }
                     return new Response().WithStatusCode(Nancy.HttpStatusCode.OK);
                 },
                 null,

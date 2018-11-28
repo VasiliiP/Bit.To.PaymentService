@@ -51,11 +51,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
-    <Compile Include="FermaClients\BaseFermaRestClient.cs" />
     <Compile Include="FermaClients\CreateRecieptRestClient.cs" />
     <Compile Include="FermaClients\GetReceiptsListRestClient.cs" />
     <Compile Include="FermaClients\GetReceiptStatusRestClient.cs" />
     <Compile Include="FermaClients\GetTokenRestClient.cs" />
+    <Compile Include="Models\BaseFermaResponse.cs" />
+    <Compile Include="Models\CreateReceiptResponse.cs" />
+    <Compile Include="Models\FermaAuthResponse.cs" />
+    <Compile Include="Models\ReceiptsListResponse.cs" />
+    <Compile Include="Models\ReceiptStatusResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

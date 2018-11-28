@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Bit.To.PaymentService.Abstractions.Models
+namespace Bit.To.PaymentService.RestClients
 {
     public class ReceiptStatusResponse: BaseFermaResponse
     {

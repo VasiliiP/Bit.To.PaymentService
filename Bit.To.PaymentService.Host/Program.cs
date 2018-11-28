@@ -5,6 +5,7 @@ using Autofac;
 using Bit.Persistence;
 using Bit.To.PaymentService.CommandHandlers;
 using Bit.To.PaymentService.Persistence;
+using Bit.To.PaymentService.RestClients.FermaClients;
 using Bit.To.PaymentService.Services;
 using Bit.To.PaymentService.Web;
 using Bit.Validation;
@@ -134,21 +135,32 @@ namespace Bit.To.PaymentService.Host
             builder.RegisterType<FermaService>()
                 .WithParameter("fermaLogin", config["FermaLogin"].AsString())
                 .WithParameter("fermaPassword", config["FermaPassword"].AsString())
-                .WithParameter("fermaBaseUrl", config["FermaBaseUrl"].AsString())
-                .WithParameter("authResource", config["AuthResource"].AsString())
-                .WithParameter("getReceiptStatusResource", config["GetReceiptStatusResource"].AsString())
-                .WithParameter("getReceiptsListResourse", config["GetReceiptsListResourse"].AsString())
-                .WithParameter("inn", config["Inn"].AsString())
                 .AsImplementedInterfaces()
                 .SingleInstance();
 
             builder.RegisterType<CreateReceiptHandler>()
-                .WithParameter("fermaBaseUrl", config["FermaBaseUrl"].AsString())
-                .WithParameter("createReceiptResource", config["CreateReceiptResource"].AsString())
+                .WithParameter("endpoint", config["FermaReceiptEndpoint"].AsString())
                 .AsImplementedInterfaces();
 
+            builder.RegisterType<GetTokenRestClient>()
+                .WithParameter("endpoint", config["FermaAuthEndpoint"].AsString())
+                .AsImplementedInterfaces();
+
+            builder.Register(ctx =>
+            {
+                var token = ctx.Resolve<IFermaService>().GetToken();
+                var endpoint = config["FermaReceiptsListEndpoint"].AsString();
+                return new GetReceiptsListRestClient(endpoint, token);
+            }).AsImplementedInterfaces(); 
+
+            builder.Register(ctx =>
+            {
+                var token = ctx.Resolve<IFermaService>().GetToken();
+                var endpoint = config["FermaStatusEndpoint"].AsString();
+                return new GetReceiptStatusRestClient(endpoint, token);
+            }).AsImplementedInterfaces();
+
             builder.RegisterType<CreateReceiptModule>();
-            builder.RegisterType<ReceiptFactory>().AsImplementedInterfaces();
             builder.RegisterType<SwaggerModule>();
 
             return builder.Build();

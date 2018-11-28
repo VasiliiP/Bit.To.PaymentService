@@ -1,10 +1,9 @@
-﻿using Bit.To.PaymentService.Abstractions.Queries;
+﻿using Bit.To.PaymentService.Abstractions;
+using Bit.To.PaymentService.Abstractions.Models;
+using Bit.To.PaymentService.Abstractions.Queries;
 using Bit.To.PaymentService.Models;
-using Bit.To.PaymentService.Persistence;
-using Bit.To.PaymentService.RestClients;
-using Bit.To.PaymentService.RestClients.FermaClients;
 using System;
-using Bit.To.PaymentService.Abstractions.Commands;
+using System.Collections.Generic;
 
 namespace Bit.To.PaymentService.Services
 {
@@ -12,36 +11,17 @@ namespace Bit.To.PaymentService.Services
     {
         private readonly string _fermaLogin;
         private readonly string _fermaPassword;
-        private readonly string _fermaBaseUrl;
-        private readonly string _authResource;
-        private readonly string _inn;
-        
-        private readonly string _getReceiptStatusResource;
-        private readonly string _getReceiptsListResourse;
+        private readonly IQueryHandler<GetToken, FermaAuthDto> _getTokenHandler;
+
         private FermaAuth FermaAuth { get; set; }
 
-        private readonly IReceiptFactory _receiptFactory;
-        private readonly IReseiptItemRepository _repository;
-
-        public FermaService(IReceiptFactory receiptFactory,
-                            IReseiptItemRepository repository,
-                            string fermaLogin, 
+        public FermaService(string fermaLogin, 
                             string fermaPassword, 
-                            string fermaBaseUrl, 
-                            string authResource, 
-                            string inn, 
-                            string getReceiptStatusResource, 
-                            string getReceiptsListResourse)
+                            IQueryHandler<GetToken, FermaAuthDto> getTokenHandler)
         {
-            _repository = repository;
-            _receiptFactory = receiptFactory;
             _fermaLogin = fermaLogin;
             _fermaPassword = fermaPassword;
-            _fermaBaseUrl = fermaBaseUrl;
-            _authResource = authResource;
-            _inn = inn;
-            _getReceiptStatusResource = getReceiptStatusResource;
-            _getReceiptsListResourse = getReceiptsListResourse;
+            _getTokenHandler = getTokenHandler;
         }
 
         /// <summary>
@@ -52,15 +32,8 @@ namespace Bit.To.PaymentService.Services
             if (FermaAuth != null && FermaAuth.IsValid)
                 return FermaAuth.AuthToken;
 
-            var getTokenQuery = new GetToken
-            {
-                Login = _fermaLogin,
-                Password = _fermaPassword
-            };
-
-            var handler = new GetTokenRestClient(_fermaBaseUrl, _authResource);
-            var dto = handler.Execute(getTokenQuery);
-            FermaAuth = FermaAuth.FromResponse(dto);
+            var dto = _getTokenHandler.Execute(new GetToken{ Login = _fermaLogin, Password = _fermaPassword});
+            FermaAuth = FermaAuth.CreateNew(dto.AuthToken, dto.ExpirationDateUtc);
             return FermaAuth.AuthToken;
         }
 
@@ -69,21 +42,10 @@ namespace Bit.To.PaymentService.Services
             //проверка статуса созданного чека
             var getReceiptStatusQuery = new GetReceiptStatus
             {
-                Request = new Request { ReceiptId = id }
+                Request = new GetReceiptRequest { ReceiptId = id }
             };
-            var getReceiptStatusHandler = new GetReceiptStatusRestClient(GetToken(), _fermaBaseUrl, _getReceiptStatusResource);
-            var status = getReceiptStatusHandler.Execute(getReceiptStatusQuery);
+            //var status = _getStatusHandler.Execute(getReceiptStatusQuery);
         }
 
-        public void GetList()
-        {
-            //Запрос на получение всех созданных чеков со вчерашнего дня
-            var getReceiptsListQuery = new GetReceiptsList
-            {
-                Request = new GetReceiptsListRequest {StartDateUtc = DateTime.Today.AddDays(-1)}
-            };
-            var hadler = new GetReceiptsListRestClient(GetToken(), _fermaBaseUrl, _getReceiptsListResourse);
-            var receipts = hadler.Execute(getReceiptsListQuery);
-        }
     }
 }

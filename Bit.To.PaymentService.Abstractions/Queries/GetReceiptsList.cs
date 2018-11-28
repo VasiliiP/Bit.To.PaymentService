@@ -8,7 +8,7 @@ using Bit.To.PaymentService.Abstractions.Models;
 namespace Bit.To.PaymentService.Abstractions.Queries
 {
 
-    public class GetReceiptsList: Query<ReceiptsListResponse>
+    public class GetReceiptsList: Query<List<ReceiptDto>>
     {
         public GetReceiptsListRequest Request { get; set; }
     }

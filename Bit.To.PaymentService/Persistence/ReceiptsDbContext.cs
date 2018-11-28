@@ -4,6 +4,7 @@ using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
 using Bit.To.PaymentService.Abstractions.Commands;
+using Nancy.Routing.Constraints;
 
 namespace Bit.To.PaymentService.Persistence
 {
@@ -32,6 +33,7 @@ namespace Bit.To.PaymentService.Persistence
             public string Dnumber { get; set; }
             public string Inn { get; set; }
             public string TaxSystem { get; set; }
+            public long CashboxId { get; set; }
         }
 
         [Table(RECEIPTITEMS_TABLE)]
@@ -69,7 +71,7 @@ namespace Bit.To.PaymentService.Persistence
 
             #region Dto from item
 
-            public ReceiptDto ReceiptDtoFromJson(ReceiptItem item)
+            public ReceiptDto ReceiptDtoFromJson(Receipt item)
             {
                 return new ReceiptDto
                 {
@@ -92,7 +94,7 @@ namespace Bit.To.PaymentService.Persistence
                 };
             }
 
-            public CashboxDto CashboxDtoFromJson(ReceiptItem item)
+            public CashboxDto CashboxDtoFromJson(Receipt item)
             {
                 return new CashboxDto
                 {
@@ -106,7 +108,7 @@ namespace Bit.To.PaymentService.Persistence
                 };
             }
 
-            public List<ItemDto> ListItemsDtoFromJson(List<Item> items, long receiptId)
+            public List<ItemDto> ListItemsDtoFromJson(List<ReceiptItem> items, long receiptId)
             {
                 var list = new List<ItemDto>();
                 foreach (var item in items)
@@ -157,45 +159,29 @@ namespace Bit.To.PaymentService.Persistence
 
             #endregion
 
-            public ReceiptItem Convert(ReceiptDto dto)
+            public Receipt Convert(ReceiptDto dto, CashboxDto cbDto, List<ItemDto> itemsDto)
             {
-                var result = new ReceiptItem
-                {
-                    ReceiptId = dto.UID,
-                    AutomaticDeviceNumber = dto.Dnumber,
-                    Email = dto.Email,
-                    Id = dto.Id,
-                    Inn = dto.Inn,
-                    InstallmentAddress = dto.Iaddress,
-                    InstallmentPlace = dto.Iplace,
-                    InvoiceId = dto.InvoiceId,
-                    StatusCode = dto.StatusCode,
-                    ReceiptDateUtc = dto.ReceiptDate,
-                    ModifiedDateUtc = dto.Modified,
-                    StatusName = dto.StatusName,
-                    Phone = dto.Phone,
-                    Type = dto.Type,
-                    StatusMessage = dto.StatusMessage,
-                    TaxationSystem = dto.TaxSystem
-                };
+                var cashbox = Convert(cbDto);
+                var items = Convert(itemsDto, dto.UID);
+
+                var result = Receipt.CreateNew(dto.UID, dto.StatusCode, dto.StatusName, dto.StatusMessage, dto.Modified,
+                    dto.ReceiptDate, dto.InvoiceId, cashbox, dto.Inn, dto.Type, dto.TaxSystem, dto.Email, dto.Phone,
+                    dto.Iplace, dto.Iaddress, dto.Dnumber, items);
+               
                 return result;
             }
 
-            private static List<Item> Convert(List<ItemDto> dtos)
+            private static Cashbox Convert(CashboxDto dto)
             {
-                var result = new List<Item>();
+                return Cashbox.CreateNew(dto.DeviceId, dto.Rnm, dto.Zn, dto.Fn, dto.Fdn, dto.Fpd);
+            }
+
+            private static List<ReceiptItem> Convert(List<ItemDto> dtos, Guid receiptId)
+            {
+                var result = new List<ReceiptItem>();
                 foreach (var dto in dtos)
                 {
-                    result.Add(new Item()
-                    {
-                        Amount = dto.Amount,
-                        CustomerReceiptId = dto.ReceiptId,
-                        Id = dto.Id,
-                        Label = dto.Label,
-                        Price = dto.Price,
-                        Quantity = dto.Quantity,
-                        Vat = dto.Vat
-                    });
+                    result.Add(ReceiptItem.CreateNew(receiptId, dto.Label, dto.Price, dto.Quantity, dto.Amount, dto.Vat));
                 }
                 return result;
             }

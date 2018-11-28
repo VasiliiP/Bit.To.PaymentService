@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Bit.To.PaymentService.Abstractions.Models
+namespace Bit.To.PaymentService.RestClients
 {
     public class ReceiptsListResponse: BaseFermaResponse
     { 
-        public List<ReceiptItemJson> Data { get; set; }
+        public List<ReceiptJson> Data { get; set; }
     }
 
-    public class ReceiptItemJson
+    public class ReceiptJson
     {
         public string ReceiptId { get; set; }
         public int StatusCode { get; set; }
@@ -20,19 +17,19 @@ namespace Bit.To.PaymentService.Abstractions.Models
         public DateTime ModifiedDateUtc { get; set; }
         public DateTime ReceiptDateUtc { get; set; }
         public string InvoiceId { get; set; }
-        public Receipt Receipt { get; set; }
+        public ReceiptResponseJson Receipt { get; set; }
     }
 
-    public class Receipt
+    public class ReceiptResponseJson
     {
-        public Cashboxinfoholder cashboxInfoHolder { get; set; }
+        public CashboxJson cashboxInfoHolder { get; set; }
         public string Inn { get; set; }
         public string Type { get; set; }
         public string InvoiceId { get; set; }
-        public Customerreceipt CustomerReceipt { get; set; }
+        public CustomerReceiptJson CustomerReceipt { get; set; }
     }
 
-    public class Cashboxinfoholder
+    public class CashboxJson
     {
         public int DeviceId { get; set; }
         public string RNM { get; set; }
@@ -42,7 +39,7 @@ namespace Bit.To.PaymentService.Abstractions.Models
         public string FPD { get; set; }
     }
 
-    public class Customerreceipt
+    public class CustomerReceiptJson
     {
         public string TaxationSystem { get; set; }
         public string Email { get; set; }
@@ -56,9 +53,9 @@ namespace Bit.To.PaymentService.Abstractions.Models
     public class ItemJson
     {
         public string Label { get; set; }
-        public int Price { get; set; }
-        public int Quantity { get; set; }
-        public int Amount { get; set; }
+        public decimal Price { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal Amount { get; set; }
         public string Vat { get; set; }
     }
 }

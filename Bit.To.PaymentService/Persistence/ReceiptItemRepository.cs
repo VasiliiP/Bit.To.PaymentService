@@ -3,6 +3,7 @@ using Bit.Persistence.Dapper;
 using Bit.To.PaymentService.Models;
 using Dapper.Contrib.Extensions;
 using System;
+using System.Collections.Generic;
 using Bit.To.PaymentService.Abstractions.Commands;
 
 namespace Bit.To.PaymentService.Persistence
@@ -19,25 +20,29 @@ namespace Bit.To.PaymentService.Persistence
             _mapper = mapper;
         }
 
-        public ReceiptItem Find(long id)
+        public Receipt Find(long id)
         {
             using (var connection = _connectionFactory.Create())
             {
-                var dto = connection.Get<ReceiptsDbContext.ReceiptDto>(id);
-                return dto == null ? null : _mapper.Convert(dto);
+                var receiptDto = connection.Get<ReceiptsDbContext.ReceiptDto>(id);
+                var cashBoxDto = connection.Get<ReceiptsDbContext.CashboxDto>(receiptDto.CashboxId);
+                var itemsDto = new List<ReceiptsDbContext.ItemDto>();//TODO: запрос на получение коллекции
+                return receiptDto == null ? null : _mapper.Convert(receiptDto, cashBoxDto, itemsDto);
             }
         }
 
-        public ReceiptItem FindByKey(Guid key)
+        public Receipt FindByKey(Guid key)
         {
             using (var connection = _connectionFactory.Create())
             {
-                var dto = connection.QueryFirstOrDefault(ReceiptsDbContext.SelectById(key));
-                return dto == null ? null : _mapper.Convert(dto);
+                var receiptDto = connection.QueryFirstOrDefault(ReceiptsDbContext.SelectById(key));
+                var cashBoxDto = connection.Get<ReceiptsDbContext.CashboxDto>(receiptDto.CashboxId);
+                var itemsDto = new List<ReceiptsDbContext.ItemDto>();//TODO: запрос на получение коллекции
+                return receiptDto == null ? null : _mapper.Convert(receiptDto, cashBoxDto, itemsDto);
             }
         }
 
-        public void Save(ReceiptItem item)
+        public void Save(Receipt item)
         {
             using (var connection = _connectionFactory.Create())
             {

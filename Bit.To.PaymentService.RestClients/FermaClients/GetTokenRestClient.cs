@@ -1,36 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Bit.To.PaymentService.Abstractions.Queries;
-using Bit.To.PaymentService.Models;
+﻿using Bit.To.PaymentService.Abstractions.Queries;
 using Bit.To.PaymentService.RestClients.Logging;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using RestSharp;
+using System;
+using System.Net;
+using Bit.To.PaymentService.Abstractions;
 
 namespace Bit.To.PaymentService.RestClients.FermaClients
 {
-    public class GetTokenRestClient: BaseFermaRestClient, IQueryHandler<GetToken, FermaAuthResponse>
+    public class GetTokenRestClient: IQueryHandler<GetToken, FermaAuthDto>
     {
+        private readonly string _endpoint;
         private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
-        public GetTokenRestClient(string baseUrl, string resource):base(null, baseUrl, resource)
+        public GetTokenRestClient(string endpoint)
         {
+            _endpoint = endpoint;
         }
-        public FermaAuthResponse Execute(GetToken query)
+        public FermaAuthDto Execute(GetToken query)
         {
-            var response = ExecutePost<FermaAuthResponse, GetToken>(query);
+            var client = new RestClient(_endpoint);
+            var request = new RestRequest(Method.POST);
+            var jsonContent = JsonConvert.SerializeObject(query);
+            request.AddHeader("Accept", "application/json");
+            request.RequestFormat = DataFormat.Json;
+            request.AddParameter("application/json", jsonContent, ParameterType.RequestBody);
+            var response = client.Execute(request);
 
-            if (response == null)
-                return null;
+            if (response.StatusCode != HttpStatusCode.OK)
+                throw new Exception(response.StatusDescription);
 
-            var payload = response.Data;
-            Log.DebugFormat("{0} Ferma response is: Status:{1}, AuthToken:{2}",
-                response.Request.Resource, payload.Status, payload.Data.AuthToken);
+            var fermaResponse = JsonConvert.DeserializeObject<FermaAuthResponse>(response.Content);
 
-            return payload;
+            if (!String.Equals(fermaResponse.Status, "Success", StringComparison.OrdinalIgnoreCase))
+            {
+                Log.ErrorFormat("... {error}", fermaResponse.Error);
+                throw new Exception(fermaResponse.Status);
+            }
+
+            return new FermaAuthDto(fermaResponse.Data.AuthToken, fermaResponse.Data.ExpirationDateUtc);
         }
     }
 }
