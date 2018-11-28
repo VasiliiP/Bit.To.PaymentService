@@ -11,13 +11,15 @@
     "SvcMetaDescription": "",
     "SvcMetaContact": "admin@rmetrika.ru",
     "SwaggerResourceListingPath": "swagger/",
+
     "FermaLogin": "fermatest1",
     "FermaPassword": "Hjsf3321klsadfAA",
 
     "FermaAuthEndpoint": "https://ferma.ofd.ru/api/Authorization/CreateAuthToken",
-    "FermaCreateReceiptEndpoint": "https://ferma.ofd.ru/api/kkt/cloud/receipt",
-    "GetReceiptStatusEndpoint": "https://ferma.ofd.ru/api/kkt/cloud/status",
-    "GetReceiptsListEndpoint": "https://ferma.ofd.ru/api/kkt/cloud/list",
+    "FermaReceiptEndpoint": "https://ferma.ofd.ru/api/kkt/cloud/receipt",
+    "FermaStatusEndpoint": "https://ferma.ofd.ru/api/kkt/cloud/status",
+    "FermaReceiptsListEndpoint": "https://ferma.ofd.ru/api/kkt/cloud/list",
+    
     "Inn": "2539112357"
 
 }

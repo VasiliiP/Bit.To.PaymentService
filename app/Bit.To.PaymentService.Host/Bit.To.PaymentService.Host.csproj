@@ -133,15 +133,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\AsyncUsageAnalyzers.1.0.0-alpha003\analyzers\dotnet\AsyncUsageAnalyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Bit.To.PaymentService.RestClients\Bit.To.PaymentService.RestClients.csproj">
-      <Project>{EB935B00-E572-46BD-BC7E-F50229D06001}</Project>
+    <ProjectReference Include="..\..\src\Bit.To.PaymentService.RestClients\Bit.To.PaymentService.RestClients.csproj">
+      <Project>{eb935b00-e572-46bd-bc7e-f50229d06001}</Project>
       <Name>Bit.To.PaymentService.RestClients</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bit.To.PaymentService\Bit.To.PaymentService.csproj">
-      <Project>{6A548EAA-F970-4C92-931B-3BDBDCB5A785}</Project>
+    <ProjectReference Include="..\..\src\Bit.To.PaymentService\Bit.To.PaymentService.csproj">
+      <Project>{6a548eaa-f970-4c92-931b-3bdbdcb5a785}</Project>
       <Name>Bit.To.PaymentService</Name>
     </ProjectReference>
   </ItemGroup>

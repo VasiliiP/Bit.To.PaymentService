@@ -12,7 +12,7 @@ namespace Bit.To.PaymentService.Web
 {
     public sealed class CreateReceiptModule : NancyModule
     {
-        public CreateReceiptModule(IFermaService fermaService, ICommandHandler<CreateReceipt> createHandler, IQueryHandler<GetReceiptsList, List<ReceiptDto>> getListHandler, string modulePath = "/") : base(modulePath)
+        public CreateReceiptModule(ICommandHandler<CreateReceipt> createHandler, IQueryHandler<GetReceiptsList, List<ReceiptDto>> getListHandler, string modulePath = "/") : base(modulePath)
         {
             Post(
                 "/receipt",

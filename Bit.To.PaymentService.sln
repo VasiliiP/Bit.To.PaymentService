@@ -7,14 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".app", ".app", "{E9872175-0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{BBA373CE-6A20-4524-84D5-A064D50FBAF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.PaymentService.Host", "Bit.To.PaymentService.Host\Bit.To.PaymentService.Host.csproj", "{C69BC04B-5B07-42E9-9FDB-ADEF11D5F34C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.PaymentService", "Bit.To.PaymentService\Bit.To.PaymentService.csproj", "{6A548EAA-F970-4C92-931B-3BDBDCB5A785}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.PaymentService.RestClients", "Bit.To.PaymentService.RestClients\Bit.To.PaymentService.RestClients.csproj", "{EB935B00-E572-46BD-BC7E-F50229D06001}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.PaymentService.Abstractions", "Bit.To.PaymentService.Abstractions\Bit.To.PaymentService.Abstractions.csproj", "{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLSripts", "SQLSripts", "{F2CB3167-DDFD-49B4-BF0C-0240058CE5C1}"
 	ProjectSection(SolutionItems) = preProject
 		CreateDb.sql = CreateDb.sql
@@ -22,7 +14,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLSripts", "SQLSripts", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".test", ".test", "{DDF64713-0EE3-4887-B522-69DD7EB3261D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.PaymentService.Tests", "Bit.To.PaymentService.Tests\Bit.To.PaymentService.Tests.csproj", "{311615CE-B7C8-4F6D-9A60-EBEB6F4675E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.PaymentService.Host", "app\Bit.To.PaymentService.Host\Bit.To.PaymentService.Host.csproj", "{C69BC04B-5B07-42E9-9FDB-ADEF11D5F34C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.PaymentService", "src\Bit.To.PaymentService\Bit.To.PaymentService.csproj", "{6A548EAA-F970-4C92-931B-3BDBDCB5A785}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.PaymentService.Abstractions", "src\Bit.To.PaymentService.Abstractions\Bit.To.PaymentService.Abstractions.csproj", "{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.PaymentService.RestClients", "src\Bit.To.PaymentService.RestClients\Bit.To.PaymentService.RestClients.csproj", "{EB935B00-E572-46BD-BC7E-F50229D06001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.PaymentService.Tests", "src\Bit.To.PaymentService.Tests\Bit.To.PaymentService.Tests.csproj", "{3B13A3ED-0F5B-411D-B2AC-AB8648AE7A42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,18 +38,18 @@ Global
 		{6A548EAA-F970-4C92-931B-3BDBDCB5A785}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A548EAA-F970-4C92-931B-3BDBDCB5A785}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A548EAA-F970-4C92-931B-3BDBDCB5A785}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB935B00-E572-46BD-BC7E-F50229D06001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB935B00-E572-46BD-BC7E-F50229D06001}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB935B00-E572-46BD-BC7E-F50229D06001}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB935B00-E572-46BD-BC7E-F50229D06001}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{311615CE-B7C8-4F6D-9A60-EBEB6F4675E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{311615CE-B7C8-4F6D-9A60-EBEB6F4675E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{311615CE-B7C8-4F6D-9A60-EBEB6F4675E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{311615CE-B7C8-4F6D-9A60-EBEB6F4675E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB935B00-E572-46BD-BC7E-F50229D06001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB935B00-E572-46BD-BC7E-F50229D06001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB935B00-E572-46BD-BC7E-F50229D06001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB935B00-E572-46BD-BC7E-F50229D06001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B13A3ED-0F5B-411D-B2AC-AB8648AE7A42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B13A3ED-0F5B-411D-B2AC-AB8648AE7A42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B13A3ED-0F5B-411D-B2AC-AB8648AE7A42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B13A3ED-0F5B-411D-B2AC-AB8648AE7A42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,9 +57,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C69BC04B-5B07-42E9-9FDB-ADEF11D5F34C} = {E9872175-0CFF-4EA8-BA0F-847671221815}
 		{6A548EAA-F970-4C92-931B-3BDBDCB5A785} = {BBA373CE-6A20-4524-84D5-A064D50FBAF5}
-		{EB935B00-E572-46BD-BC7E-F50229D06001} = {BBA373CE-6A20-4524-84D5-A064D50FBAF5}
 		{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4} = {BBA373CE-6A20-4524-84D5-A064D50FBAF5}
-		{311615CE-B7C8-4F6D-9A60-EBEB6F4675E4} = {DDF64713-0EE3-4887-B522-69DD7EB3261D}
+		{EB935B00-E572-46BD-BC7E-F50229D06001} = {BBA373CE-6A20-4524-84D5-A064D50FBAF5}
+		{3B13A3ED-0F5B-411D-B2AC-AB8648AE7A42} = {DDF64713-0EE3-4887-B522-69DD7EB3261D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {76AE5FDB-5E76-4F86-A5D3-709BD9876805}

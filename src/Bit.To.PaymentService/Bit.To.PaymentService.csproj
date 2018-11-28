@@ -91,14 +91,13 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bit.To.PaymentService.Abstractions\Bit.To.PaymentService.Abstractions.csproj">
-      <Project>{BD83C2F9-F7E2-43D1-9188-AC7AC45ED3B4}</Project>
+      <Project>{bd83c2f9-f7e2-43d1-9188-ac7ac45ed3b4}</Project>
       <Name>Bit.To.PaymentService.Abstractions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bit.To.PaymentService.RestClients\Bit.To.PaymentService.RestClients.csproj">
-      <Project>{EB935B00-E572-46BD-BC7E-F50229D06001}</Project>
+      <Project>{eb935b00-e572-46bd-bc7e-f50229d06001}</Project>
       <Name>Bit.To.PaymentService.RestClients</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
