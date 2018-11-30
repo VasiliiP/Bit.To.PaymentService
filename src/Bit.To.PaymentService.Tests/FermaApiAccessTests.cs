@@ -6,7 +6,6 @@ using Autofac;
 using Bit.To.PaymentService.Abstractions.Queries;
 using Bit.To.PaymentService.RestClients;
 using Bit.To.PaymentService.RestClients.FermaClients;
-using Bit.To.PaymentService.Services;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
@@ -17,7 +16,7 @@ namespace Bit.To.PaymentService.Tests
     {
         private static IAppConfiguration CreateConfiguration() =>
             new AppConfigurationBuilder()
-                .AddJsonFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "cfg", "default.json"))
+                .AddJsonFile("..\\..\\cfg\\default.json")
                 .Build();
 
         [Test]
@@ -26,8 +25,8 @@ namespace Bit.To.PaymentService.Tests
             var config = CreateConfiguration();
             var c = CreateContainer(config);
             var restClient = c.Resolve<GetTokenRestClient>();
-            var token = restClient.Execute(new GetToken { Login = config["FermaLogin"], Password = config["FermaPassword"] });
-            Assert.IsNotEmpty(token.AuthToken);
+            var token = restClient.Execute(new GetToken());
+            Assert.IsNotEmpty(token);
         }
 
         [Test]
@@ -64,35 +63,27 @@ namespace Bit.To.PaymentService.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterType<GetTokenRestClient>().AsSelf().AsImplementedInterfaces()
-                .WithParameter("endpoint", config["FermaAuthEndpoint"].AsString());
-
-            builder.RegisterType<FermaService>()
+            builder.RegisterType<GetTokenRestClient>()
+                .AsSelf()
+                .AsImplementedInterfaces()
                 .WithParameter("fermaLogin", config["FermaLogin"].AsString())
                 .WithParameter("fermaPassword", config["FermaPassword"].AsString())
-                .AsImplementedInterfaces()
-                .SingleInstance();
+                .WithParameter("endpoint", config["FermaAuthEndpoint"].AsString());
 
-            builder.Register(ctx =>
-            {
-                var token = ctx.Resolve<IFermaService>().GetToken();
-                var endpoint = config["FermaReceiptEndpoint"].AsString();
-                return new CreateRecieptRestClient(endpoint, token);
-            }).AsSelf().AsImplementedInterfaces();
+            builder.RegisterType<CreateRecieptRestClient>()
+                .AsSelf()
+                .WithParameter("endpoint", config["FermaReceiptEndpoint"].AsString())
+                .AsImplementedInterfaces();
 
-            builder.Register(ctx =>
-            {
-                var token = ctx.Resolve<IFermaService>().GetToken();
-                var endpoint = config["FermaReceiptsListEndpoint"].AsString();
-                return new GetReceiptsListRestClient(endpoint, token);
-            }).AsSelf().AsImplementedInterfaces();
+            builder.RegisterType<GetReceiptsListRestClient>()
+                .AsSelf()
+                .WithParameter("endpoint", config["FermaReceiptsListEndpoint"].AsString())
+                .AsImplementedInterfaces();
 
-            builder.Register(ctx =>
-            {
-                var token = ctx.Resolve<IFermaService>().GetToken();
-                var endpoint = config["FermaStatusEndpoint"].AsString();
-                return new GetReceiptStatusRestClient(endpoint, token);
-            }).AsSelf().AsImplementedInterfaces();
+            builder.RegisterType<GetReceiptStatusRestClient>()
+                .AsSelf()
+                .WithParameter("endpoint", config["FermaStatusEndpoint"].AsString())
+                .AsImplementedInterfaces();
 
             return builder.Build();
         }

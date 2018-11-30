@@ -1,27 +1,27 @@
 ﻿using Bit.To.PaymentService.Abstractions.Commands;
 using Bit.To.PaymentService.Persistence;
 using Bit.To.PaymentService.RestClients;
-using Bit.To.PaymentService.Services;
 using System;
+using Bit.To.PaymentService.Abstractions.Queries;
 
 namespace Bit.To.PaymentService.CommandHandlers
 {
     public class CreateReceiptHandler : ICommandHandler<CreateReceipt>
     {
-        private readonly IFermaService _fermaService;
         private readonly IReseiptItemRepository _repository;
         private readonly string _endpoint;
+        private readonly IQueryHandler<GetToken, string> _tokenHandler;
 
-        public CreateReceiptHandler(IFermaService fermaService, string endpoint, IReseiptItemRepository repository)
+        public CreateReceiptHandler(string endpoint, IReseiptItemRepository repository, IQueryHandler<GetToken, string> tokenHandler)
         {
-            _fermaService = fermaService;
             _endpoint = endpoint;
             _repository = repository;
+            _tokenHandler = tokenHandler;
         }
 
         public void Execute(CreateReceipt cmd)
         {
-            var restClient = new CreateRecieptRestClient(_endpoint, _fermaService.GetToken());
+            var restClient = new CreateRecieptRestClient(_endpoint, _tokenHandler);
             var receiptId = restClient.Execute(cmd);
             _repository.Save(cmd, new Guid(receiptId));
         }

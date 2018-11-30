@@ -1,5 +1,4 @@
 ﻿using Bit.To.PaymentService.Abstractions.Commands;
-using Bit.To.PaymentService.Services;
 using Nancy;
 using Nancy.Extensions;
 using Newtonsoft.Json;

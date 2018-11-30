@@ -12,20 +12,21 @@ namespace Bit.To.PaymentService.RestClients.FermaClients
     public class GetReceiptStatusRestClient : IQueryHandler<GetReceiptStatus, ReceiptStatusDto>
     {
         private readonly string _endpoint;
-        private readonly string _token;
         private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
+        private readonly IQueryHandler<GetToken, string> _tokenHandler;
 
-        public GetReceiptStatusRestClient(string endpoint, string token)
+        public GetReceiptStatusRestClient(string endpoint, IQueryHandler<GetToken, string> tokenHandler)
         {
             _endpoint = endpoint;
-            _token = token;
+            _tokenHandler = tokenHandler;
         }
 
         public ReceiptStatusDto Execute(GetReceiptStatus query)
         {
             var client = new RestClient(_endpoint);
             var request = new RestRequest(Method.POST);
-            request.AddParameter("AuthToken", _token, ParameterType.QueryString);
+            var token = _tokenHandler.Execute(new GetToken());
+            request.AddParameter("AuthToken", token, ParameterType.QueryString);
             var jsonContent = JsonConvert.SerializeObject(query);
             request.AddHeader("Accept", "application/json");
             request.RequestFormat = DataFormat.Json;
