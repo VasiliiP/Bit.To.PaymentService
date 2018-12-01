@@ -23,15 +23,14 @@ namespace Bit.To.PaymentService.RestClients.FermaClients
             _fermaPassword = fermaPassword;
             _endpoint = endpoint;
         }
-        public string Execute(GetToken emptyQuery)
+        public string Execute(GetToken query)
         {
             if (!string.IsNullOrEmpty(_token) && _expirationDate > DateTime.UtcNow)
                 return _token;
-
-            var query = new GetToken {Login = _fermaLogin, Password = _fermaPassword};
+            
             var client = new RestClient(_endpoint);
             var request = new RestRequest(Method.POST);
-            var jsonContent = JsonConvert.SerializeObject(query);
+            var jsonContent = JsonConvert.SerializeObject(new { Login = _fermaLogin, Password = _fermaPassword } );
             request.AddHeader("Accept", "application/json");
             request.RequestFormat = DataFormat.Json;
             request.AddParameter("application/json", jsonContent, ParameterType.RequestBody);
