@@ -15,11 +15,14 @@
     "FermaLogin": "fermatest1",
     "FermaPassword": "Hjsf3321klsadfAA",
 
+    "YaKassaShopId": "568221",
+    "YaKassaSecret": "test_J-rKBbxVb1Jtq5Gn8Ubl_bmnhHHjI7_AIh79OPvxQOw",
+
     "FermaAuthEndpoint": "https://ferma.ofd.ru/api/Authorization/CreateAuthToken",
     "FermaReceiptEndpoint": "https://ferma.ofd.ru/api/kkt/cloud/receipt",
     "FermaStatusEndpoint": "https://ferma.ofd.ru/api/kkt/cloud/status",
     "FermaReceiptsListEndpoint": "https://ferma.ofd.ru/api/kkt/cloud/list",
-    
+
     "Inn": "2539112357"
 
 }
