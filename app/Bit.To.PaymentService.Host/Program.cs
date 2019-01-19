@@ -7,6 +7,8 @@ using Bit.To.PaymentService.CommandHandlers;
 using Bit.To.PaymentService.Persistence;
 using Bit.To.PaymentService.RestClients.FermaClients;
 using Bit.To.PaymentService.Web;
+using Bit.To.YaKassa.CommandHandlers;
+using Bit.To.YaKassa.Web;
 using Bit.Validation;
 using Nancy;
 using Nancy.Bootstrapper;
@@ -70,6 +72,7 @@ namespace Bit.To.PaymentService.Host
                 container,
                 new List<Action<ILifetimeScope, IPipelines>> {LogError},
                 typeof(CreateReceiptModule),
+                typeof(CreatePaymentModule),
                 typeof(SwaggerModule));
 
             InitSwagger(config);
@@ -131,12 +134,14 @@ namespace Bit.To.PaymentService.Host
                 .WithParameter("connectionFactory", new SqlConnectionFactory(config.ConnectionString("payment"))).AsImplementedInterfaces();
             builder.RegisterType<ReceiptsDbContext.Mapper>();
 
-            //builder.RegisterType<FermaService>()
-            //    .AsImplementedInterfaces()
-            //    .SingleInstance();
-
             builder.RegisterType<CreateReceiptHandler>()
                 .WithParameter("endpoint", config["FermaReceiptEndpoint"].AsString())
+                .AsImplementedInterfaces();
+
+            builder.RegisterType<CreatePaymentHandler>()
+                .WithParameter("endpoint", config["YaKassaCreatePaymentEndpoint"].AsString())
+                .WithParameter("shopId", config["YaKassaShopId"].AsString())
+                .WithParameter("secret", config["YaKassaSecret"].AsString())
                 .AsImplementedInterfaces();
 
             builder.RegisterType<GetTokenRestClient>()
@@ -154,6 +159,7 @@ namespace Bit.To.PaymentService.Host
                 .AsImplementedInterfaces();
 
             builder.RegisterType<CreateReceiptModule>();
+            builder.RegisterType<CreatePaymentModule>();
             builder.RegisterType<SwaggerModule>();
 
             return builder.Build();

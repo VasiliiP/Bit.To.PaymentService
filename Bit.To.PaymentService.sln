@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.YaKassa.Abstractions
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.YaKassa.RestClients", "src\Bit.To.YaKassa.RestClients\Bit.To.YaKassa.RestClients.csproj", "{D9E77DB0-4DDC-4B86-9414-82F37F504698}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit.To.YaKassa.Tests", "src\Bit.To.YaKassa.Tests\Bit.To.YaKassa.Tests.csproj", "{1C9B7EBD-127F-46C8-8688-12C793C94D13}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{D9E77DB0-4DDC-4B86-9414-82F37F504698}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9E77DB0-4DDC-4B86-9414-82F37F504698}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9E77DB0-4DDC-4B86-9414-82F37F504698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C9B7EBD-127F-46C8-8688-12C793C94D13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C9B7EBD-127F-46C8-8688-12C793C94D13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C9B7EBD-127F-46C8-8688-12C793C94D13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C9B7EBD-127F-46C8-8688-12C793C94D13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +87,7 @@ Global
 		{A3377DBE-7BAD-4680-B7BD-9EC9B73E1B56} = {BBA373CE-6A20-4524-84D5-A064D50FBAF5}
 		{570BB1DB-8710-4F11-98E4-71A3CB55CA9D} = {BBA373CE-6A20-4524-84D5-A064D50FBAF5}
 		{D9E77DB0-4DDC-4B86-9414-82F37F504698} = {BBA373CE-6A20-4524-84D5-A064D50FBAF5}
+		{1C9B7EBD-127F-46C8-8688-12C793C94D13} = {DDF64713-0EE3-4887-B522-69DD7EB3261D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {76AE5FDB-5E76-4F86-A5D3-709BD9876805}

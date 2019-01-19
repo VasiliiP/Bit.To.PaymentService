@@ -141,6 +141,10 @@
       <Project>{6a548eaa-f970-4c92-931b-3bdbdcb5a785}</Project>
       <Name>Bit.To.PaymentService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\Bit.To.YaKassa\Bit.To.YaKassa.csproj">
+      <Project>{A3377DBE-7BAD-4680-B7BD-9EC9B73E1B56}</Project>
+      <Name>Bit.To.YaKassa</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
