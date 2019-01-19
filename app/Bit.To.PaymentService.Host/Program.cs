@@ -8,6 +8,7 @@ using Bit.To.PaymentService.Persistence;
 using Bit.To.PaymentService.RestClients.FermaClients;
 using Bit.To.PaymentService.Web;
 using Bit.To.YaKassa.CommandHandlers;
+using Bit.To.YaKassa.Persistence;
 using Bit.To.YaKassa.Web;
 using Bit.Validation;
 using Nancy;
@@ -133,6 +134,10 @@ namespace Bit.To.PaymentService.Host
             builder.RegisterType<ReseiptItemRepository>()
                 .WithParameter("connectionFactory", new SqlConnectionFactory(config.ConnectionString("payment"))).AsImplementedInterfaces();
             builder.RegisterType<ReceiptsDbContext.Mapper>();
+
+            builder.RegisterType<PaymentItemRepository>()
+                .WithParameter("connectionFactory", new SqlConnectionFactory(config.ConnectionString("payment"))).AsImplementedInterfaces();
+            builder.RegisterType<PaymentsDbContext.Mapper>();
 
             builder.RegisterType<CreateReceiptHandler>()
                 .WithParameter("endpoint", config["FermaReceiptEndpoint"].AsString())

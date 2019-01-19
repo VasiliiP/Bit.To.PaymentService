@@ -94,6 +94,25 @@ GO
 ALTER TABLE [dbo].[ReceiptItems] CHECK CONSTRAINT [FK_ReceiptItems_Receipts]
 GO
 
+IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES 
+            WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Payments'))
+	DROP TABLE [dbo].Payments
+GO
+CREATE TABLE [dbo].Payments(
+	Id int IDENTITY(1,1) NOT NULL,
+	[UID] uniqueidentifier NOT NULL,
+	Amount decimal(12, 2) NOT NULL,
+	Currency nvarchar(6) NOT NULL,
+	ConfType nvarchar(20) NULL,
+	ConfRedirect nvarchar(50) NULL,
+	Descr nvarchar(max) NULL
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
 --ALTER TABLE [dbo].[Receipts]  WITH CHECK ADD  CONSTRAINT [FK_Receipts_Cashboxes] FOREIGN KEY([CashboxId])
 --REFERENCES [dbo].[Cashboxes] ([Id])
 --GO
