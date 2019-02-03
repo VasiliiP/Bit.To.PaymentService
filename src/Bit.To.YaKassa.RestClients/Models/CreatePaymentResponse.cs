@@ -34,4 +34,5 @@ namespace Bit.To.YaKassa.RestClients.Models
     public class Metadata
     {
     }
+
 }

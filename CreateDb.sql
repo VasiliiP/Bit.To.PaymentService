@@ -95,10 +95,10 @@ ALTER TABLE [dbo].[ReceiptItems] CHECK CONSTRAINT [FK_ReceiptItems_Receipts]
 GO
 
 IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES 
-            WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Payments'))
-	DROP TABLE [dbo].Payments
+            WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'PaymentCmds'))
+	DROP TABLE [dbo].PaymentCmds
 GO
-CREATE TABLE [dbo].Payments(
+CREATE TABLE [dbo].PaymentCmds(
 	Id int IDENTITY(1,1) NOT NULL,
 	[UID] uniqueidentifier NOT NULL,
 	Amount decimal(12, 2) NOT NULL,

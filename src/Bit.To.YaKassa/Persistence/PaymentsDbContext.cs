@@ -11,10 +11,10 @@ namespace Bit.To.YaKassa.Persistence
 {
     public class PaymentsDbContext
     {
-        private const string PAYMENTS_TABLE = "Payments";
+        private const string PAYMENTS_TABLE = "PaymentCmds";
 
         [Table(PAYMENTS_TABLE)]
-        public class PaymentDto
+        public class PaymentCommandDto
         {
             public long Id { get; set; }
             public Guid UID { get; set; }
@@ -27,9 +27,9 @@ namespace Bit.To.YaKassa.Persistence
 
         public class Mapper
         {
-            public PaymentDto PaymentDtoFromCmd(CreatePayment cmd)
+            public PaymentCommandDto DtoFromCmd(CreatePayment cmd)
             {
-                return new PaymentDto
+                return new PaymentCommandDto
                 {
                     Amount = Convert.ToDecimal(cmd.amount.value, CultureInfo.InvariantCulture),
                     ConfRedirect = cmd.confirmation.return_url,

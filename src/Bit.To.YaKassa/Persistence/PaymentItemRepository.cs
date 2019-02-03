@@ -23,7 +23,7 @@ namespace Bit.To.YaKassa.Persistence
         {
             using (var connection = _connectionFactory.Create())
             {
-                var receiptDto = _mapper.PaymentDtoFromCmd(cmd);
+                var receiptDto = _mapper.DtoFromCmd(cmd);
                 receiptDto.UID = guid;
                 var id = connection.Insert(receiptDto);
             }

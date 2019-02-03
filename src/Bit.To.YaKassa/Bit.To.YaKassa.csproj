@@ -74,6 +74,7 @@
     <Compile Include="Persistence\PaymentItemRepository.cs" />
     <Compile Include="Persistence\PaymentsDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryHandlers\GetPaymentHandler.cs" />
     <Compile Include="Web\CreatePaymentModule.cs" />
   </ItemGroup>
   <ItemGroup>
